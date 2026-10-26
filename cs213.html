@@ -1,1299 +1,550 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="dark">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Programming Language Genealogy Tree (Sebesta Ch. 2)</title>
-    <!-- Tailwind CSS CDN -->
-    <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = {
-            darkMode: 'class',
-            theme: {
-                extend: {
-                    colors: {
-                        darkbg: '#090d16',
-                        cardbg: 'rgba(15, 23, 42, 0.85)',
-                        cardborder: 'rgba(255, 255, 255, 0.08)',
-                        fortran: '#3b82f6',
-                        algol: '#06b6d4',
-                        lisp: '#a855f7',
-                        cobol: '#ec4899',
-                        oop: '#10b981',
-                        web: '#f59e0b',
-                        script: '#e11d48'
-                    }
-                }
-            }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Programming Language Genealogy - Sebesta Ch. 2</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script>
+    tailwind.config = {
+      darkMode: 'class',
+      theme: {
+        extend: {
+          colors: {
+            brand: { 500: '#6366f1', 600: '#4f46e5' },
+            darkbg: '#0f172a',
+            cardbg: '#1e293b'
+          }
         }
-    </script>
-    <!-- Font Awesome Icons -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <!-- Google Fonts: Inter -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
-    <style>
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #090d16;
-            color: #f1f5f9;
-            overflow: hidden;
-        }
-
-        /* Glassmorphism Styling */
-        .glass-panel {
-            background: rgba(15, 23, 42, 0.75);
-            backdrop-filter: blur(16px);
-            -webkit-backdrop-filter: blur(16px);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-        }
-
-        .glass-card {
-            background: rgba(30, 41, 59, 0.6);
-            backdrop-filter: blur(8px);
-            border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-
-        .glass-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.3);
-            border-color: rgba(255, 255, 255, 0.25);
-        }
-
-        /* Custom Scrollbar */
-        ::-webkit-scrollbar {
-            width: 6px;
-            height: 6px;
-        }
-        ::-webkit-scrollbar-track {
-            background: rgba(15, 23, 42, 0.6);
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 255, 255, 0.15);
-            border-radius: 4px;
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: rgba(255, 255, 255, 0.3);
-        }
-
-        /* Connection Lines */
-        .connection-line {
-            stroke: rgba(148, 163, 184, 0.2);
-            stroke-width: 2px;
-            fill: none;
-            transition: stroke 0.3s ease, stroke-width 0.3s ease;
-        }
-
-        .connection-line.highlight-parent {
-            stroke: #38bdf8;
-            stroke-width: 3.5px;
-            filter: drop-shadow(0 0 6px #38bdf8);
-        }
-
-        .connection-line.highlight-child {
-            stroke: #a855f7;
-            stroke-width: 3.5px;
-            filter: drop-shadow(0 0 6px #a855f7);
-        }
-
-        /* Active highlight for node selection */
-        .node-highlight-parent {
-            ring-2: 2px;
-            ring-color: #38bdf8;
-            box-shadow: 0 0 20px rgba(56, 189, 248, 0.6) !important;
-            border-color: #38bdf8 !important;
-        }
-
-        .node-highlight-child {
-            box-shadow: 0 0 20px rgba(168, 85, 247, 0.6) !important;
-            border-color: #a855f7 !important;
-        }
-
-        .node-selected {
-            box-shadow: 0 0 25px rgba(236, 72, 153, 0.8) !important;
-            border-color: #ec4899 !important;
-        }
-
-        /* Neon Glow Accents */
-        .glow-cyan { box-shadow: 0 0 12px rgba(6, 182, 212, 0.3); }
-        .glow-purple { box-shadow: 0 0 12px rgba(168, 85, 247, 0.3); }
-        .glow-emerald { box-shadow: 0 0 12px rgba(16, 185, 129, 0.3); }
-
-        /* Draggable canvas styling */
-        #viewport {
-            cursor: grab;
-            user-select: none;
-        }
-        #viewport:active {
-            cursor: grabbing;
-        }
-    </style>
+      }
+    }
+  </script>
+  <style>
+    body { background-color: #0f172a; color: #f8fafc; font-family: system-ui, -apple-system, sans-serif; }
+    .connection-line { stroke-dasharray: 6; animation: dash 30s linear infinite; }
+    @keyframes dash { to { stroke-dashoffset: -1000; } }
+  </style>
 </head>
-<body class="h-screen w-screen flex flex-col antialiased">
+<body class="min-h-screen flex flex-col bg-slate-900 text-slate-100">
 
-    <!-- Top Header Bar -->
-    <header class="h-16 glass-panel z-20 flex items-center justify-between px-6 border-b border-slate-800">
-        <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-gradient-to-tr from-blue-600 to-indigo-500 flex items-center justify-center text-white shadow-lg shadow-indigo-500/30">
-                <i class="fa-solid fa-code-branch text-xl"></i>
-            </div>
-            <div>
-                <h1 class="font-bold text-lg text-white leading-tight">Programming Language Genealogy</h1>
-                <p class="text-xs text-slate-400">Sebesta - Concepts of Programming Languages (Ch. 2)</p>
-            </div>
-        </div>
-
-        <!-- Filter Pills & Search -->
-        <div class="flex items-center gap-4">
-            <!-- Search -->
-            <div class="relative">
-                <i class="fa-solid fa-search absolute left-3 top-1/2 -translate-y-1/2 text-slate-400 text-sm"></i>
-                <input type="text" id="searchInput" placeholder="Search language, creator, concept..." 
-                    class="bg-slate-900/80 border border-slate-700/80 text-sm rounded-lg pl-9 pr-4 py-1.5 w-64 text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500 focus:ring-1 focus:ring-blue-500 transition-all">
-            </div>
-
-            <!-- View Reset Button -->
-            <button id="resetViewBtn" title="Reset Zoom & Position" class="p-2 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 hover:text-white border border-slate-700 transition">
-                <i class="fa-solid fa-compress-arrows-alt"></i>
-            </button>
-        </div>
-    </header>
-
-    <!-- Category Filter Bar -->
-    <div class="glass-panel z-10 px-6 py-2.5 flex items-center gap-2 overflow-x-auto border-b border-slate-800/80 text-xs">
-        <span class="text-slate-400 font-medium uppercase tracking-wider mr-2 text-[10px]">Filter Lineage:</span>
-        <button class="filter-btn active px-3 py-1 rounded-full bg-blue-600 text-white font-medium transition" data-category="ALL">All Families</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="FORTRAN">FORTRAN Lineage</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="ALGOL">ALGOL & Imperative</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="LISP">LISP & Functional</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="COBOL">COBOL & Business</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="OOP">Object-Oriented</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="WEB">Web & Scripting</button>
+  <!-- Header -->
+  <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-30 px-6 py-4 flex flex-wrap justify-between items-center gap-4">
+    <div>
+      <h1 class="text-2xl font-bold text-indigo-400">Programming Language Genealogy</h1>
+      <p class="text-xs text-slate-400">Strictly mapped from Sebesta Chapter 2 slides</p>
     </div>
+    <div class="flex items-center gap-3">
+      <input type="text" id="searchInput" oninput="filterGraph()" placeholder="Search language..." class="bg-slate-800 text-sm text-slate-200 px-4 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-indigo-500 w-64">
+    </div>
+  </header>
 
-    <!-- Main Workspace (Interactive Canvas Container) -->
-    <main id="viewport" class="flex-1 relative overflow-hidden bg-gradient-to-b from-[#090d16] to-[#0f172a]">
-        <!-- Zoom Controls Overlay -->
-        <div class="absolute bottom-6 right-6 z-10 flex flex-col gap-2 glass-panel p-1.5 rounded-xl border border-slate-700/60">
-            <button id="zoomInBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition">
-                <i class="fa-solid fa-plus text-xs"></i>
-            </button>
-            <button id="zoomOutBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition">
-                <i class="fa-solid fa-minus text-xs"></i>
-            </button>
-            <button id="centerBtn" class="w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 flex items-center justify-center transition">
-                <i class="fa-solid fa-crosshairs text-xs"></i>
-            </button>
+  <!-- Main Container -->
+  <main class="flex-1 relative overflow-auto p-8 flex justify-center min-w-[1200px]">
+    <div class="relative w-full max-w-[1400px]" id="graphContainer">
+      
+      <!-- SVG Lines Canvas -->
+      <svg id="svgCanvas" class="absolute inset-0 w-full h-full pointer-events-none z-0" xmlns="http://www.w3.org/2000/svg">
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1" />
+          </marker>
+        </defs>
+      </svg>
+
+      <!-- Language Columns / Clusters -->
+      <div class="grid grid-cols-6 gap-6 relative z-10">
+        
+        <!-- FORTRAN Line -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">FORTRAN Line</h2>
+          <div id="node-fortran" onclick="openDetails('fortran')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-amber-500/30 cursor-pointer transition">
+            <div class="font-bold text-amber-300">FORTRAN</div>
+            <div class="text-xs text-slate-400">Scientific & Numerics</div>
+          </div>
+          <div id="node-basic" onclick="openDetails('basic')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-amber-500/30 cursor-pointer transition mt-8">
+            <div class="font-bold text-amber-300">BASIC</div>
+            <div class="text-xs text-slate-400">Timesharing / Education</div>
+          </div>
         </div>
 
-        <!-- Legend Overlay -->
-        <div class="absolute bottom-6 left-6 z-10 glass-panel p-3 rounded-xl border border-slate-800 text-xs flex gap-4 text-slate-400">
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-sky-400"></span> Ancestors / Parents
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-purple-500"></span> Descendants / Children
-            </div>
-            <div class="flex items-center gap-2">
-                <span class="w-2.5 h-2.5 rounded-full bg-pink-500"></span> Selected Node
-            </div>
+        <!-- ALGOL Line -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">ALGOL Line</h2>
+          <div id="node-algol58" onclick="openDetails('algol58')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">ALGOL 58</div>
+            <div class="text-xs text-slate-400">Type Concept Formalized</div>
+          </div>
+          <div id="node-algol60" onclick="openDetails('algol60')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">ALGOL 60</div>
+            <div class="text-xs text-slate-400">Root of Imperative</div>
+          </div>
+          <div id="node-algol68" onclick="openDetails('algol68')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">ALGOL 68</div>
+            <div class="text-xs text-slate-400">Orthogonality Concept</div>
+          </div>
+          <div id="node-simula67" onclick="openDetails('simula67')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">SIMULA 67</div>
+            <div class="text-xs text-slate-400">Classes & Objects</div>
+          </div>
+          <div id="node-pascal" onclick="openDetails('pascal')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">Pascal</div>
+            <div class="text-xs text-slate-400">Teaching Structured Prog.</div>
+          </div>
+          <div id="node-ada" onclick="openDetails('ada')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
+            <div class="font-bold text-emerald-300">Ada</div>
+            <div class="text-xs text-slate-400">DoD Effort / Packages</div>
+          </div>
         </div>
 
-        <!-- Scalable and Draggable Graph Container -->
-        <div id="graphContainer" class="absolute inset-0 origin-top-left transition-transform duration-75">
-            <!-- SVG Container for Arrow Connections -->
-            <svg id="svgCanvas" class="absolute inset-0 w-[2800px] h-[1800px] pointer-events-none z-0">
-                <defs>
-                    <!-- Gradient definitions -->
-                    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#38bdf8" stop-opacity="0.4"/>
-                        <stop offset="100%" stop-color="#a855f7" stop-opacity="0.4"/>
-                    </linearGradient>
-                </defs>
-            </svg>
-
-            <!-- Column Layout Container -->
-            <div id="columnsWrapper" class="absolute top-10 left-10 flex gap-20 items-start z-10 pb-32">
-                <!-- Paradigm Columns dynamically populated -->
-            </div>
-        </div>
-    </main>
-
-    <!-- Detail Drawer Panel (Opens on Node Click) -->
-    <aside id="detailDrawer" class="fixed top-0 right-0 h-full w-[480px] max-w-full glass-panel z-30 shadow-2xl border-l border-slate-700/80 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
-        <!-- Drawer Header -->
-        <div class="p-6 border-b border-slate-800 flex items-start justify-between bg-slate-900/60">
-            <div>
-                <span id="drawerCategory" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30 mb-2 inline-block">Category</span>
-                <h2 id="drawerTitle" class="text-2xl font-extrabold text-white">Language Name</h2>
-                <p id="drawerMeta" class="text-xs text-slate-400 mt-1">Creator • Design Environment</p>
-            </div>
-            <button id="closeDrawerBtn" class="p-2 text-slate-400 hover:text-white hover:bg-slate-800 rounded-lg transition">
-                <i class="fa-solid fa-xmark text-lg"></i>
-            </button>
+        <!-- C Line -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-blue-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">C Family</h2>
+          <div id="node-c" onclick="openDetails('c')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition mt-24">
+            <div class="font-bold text-blue-300">C</div>
+            <div class="text-xs text-slate-400">Systems Programming</div>
+          </div>
+          <div id="node-cpp" onclick="openDetails('cpp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
+            <div class="font-bold text-blue-300">C++</div>
+            <div class="text-xs text-slate-400">Imperative + OOP</div>
+          </div>
+          <div id="node-objc" onclick="openDetails('objc')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
+            <div class="font-bold text-blue-300">Objective-C</div>
+            <div class="text-xs text-slate-400">C + Smalltalk OOP</div>
+          </div>
+          <div id="node-go" onclick="openDetails('go')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
+            <div class="font-bold text-blue-300">Go</div>
+            <div class="text-xs text-slate-400">Loosely based on C</div>
+          </div>
+          <div id="node-java" onclick="openDetails('java')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
+            <div class="font-bold text-blue-300">Java</div>
+            <div class="text-xs text-slate-400">Simplified C++ / JVM</div>
+          </div>
+          <div id="node-csharp" onclick="openDetails('csharp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
+            <div class="font-bold text-blue-300">C#</div>
+            <div class="text-xs text-slate-400">Based on C++ & Java</div>
+          </div>
         </div>
 
-        <!-- Drawer Content Body -->
-        <div class="flex-1 overflow-y-auto p-6 space-y-6 text-sm text-slate-300">
-            <!-- Historical Background -->
-            <section class="bg-slate-900/40 p-4 rounded-xl border border-slate-800">
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Background & Context
-                </h3>
-                <div class="grid grid-cols-2 gap-3 text-xs">
-                    <div><span class="text-slate-500 block">Creator(s):</span> <span id="drawerCreator" class="text-slate-200 font-medium"></span></div>
-                    <div><span class="text-slate-500 block">Target Field:</span> <span id="drawerTarget" class="text-slate-200 font-medium"></span></div>
-                    <div class="col-span-2"><span class="text-slate-500 block">Design Environment:</span> <span id="drawerEnv" class="text-slate-200 font-medium"></span></div>
-                </div>
-            </section>
-
-            <!-- Lineage -->
-            <section>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-diagram-project text-purple-400"></i> Lineage Connections
-                </h3>
-                <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-                        <span class="text-slate-500 block mb-1">Direct Ancestors:</span>
-                        <div id="drawerParents" class="flex flex-wrap gap-1"></div>
-                    </div>
-                    <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
-                        <span class="text-slate-500 block mb-1">Direct Descendants:</span>
-                        <div id="drawerChildren" class="flex flex-wrap gap-1"></div>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Key Features & Design Process -->
-            <section>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-microchip text-emerald-400"></i> Key Design Features
-                </h3>
-                <ul id="drawerFeatures" class="list-disc list-inside space-y-1.5 text-slate-300 text-xs bg-slate-900/40 p-4 rounded-xl border border-slate-800/80"></ul>
-            </section>
-
-            <!-- Major Innovations & Contributions -->
-            <section>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-lightbulb text-amber-400"></i> Contributions & Innovations
-                </h3>
-                <ul id="drawerInnovations" class="list-disc list-inside space-y-1.5 text-slate-300 text-xs bg-slate-900/40 p-4 rounded-xl border border-slate-800/80"></ul>
-            </section>
-
-            <!-- Evaluation (Successes & Failures) -->
-            <section>
-                <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-scale-balanced text-rose-400"></i> Language Evaluation
-                </h3>
-                <div class="space-y-2 text-xs">
-                    <div class="bg-emerald-950/20 border border-emerald-800/40 p-3 rounded-lg">
-                        <span class="font-bold text-emerald-400 block mb-1"><i class="fa-solid fa-check mr-1"></i> Successes & Impact:</span>
-                        <p id="drawerSuccesses" class="text-slate-300 leading-relaxed"></p>
-                    </div>
-                    <div class="bg-rose-950/20 border border-rose-800/40 p-3 rounded-lg">
-                        <span class="font-bold text-rose-400 block mb-1"><i class="fa-solid fa-xmark mr-1"></i> Weaknesses & Limitations:</span>
-                        <p id="drawerWeaknesses" class="text-slate-300 leading-relaxed"></p>
-                    </div>
-                </div>
-            </section>
-
-            <!-- Exam Focus & Slide Notes -->
-            <section class="bg-gradient-to-r from-blue-950/30 to-purple-950/30 p-4 rounded-xl border border-blue-500/30">
-                <h3 class="text-xs font-bold text-blue-300 uppercase tracking-wider mb-2 flex items-center gap-2">
-                    <i class="fa-solid fa-graduation-cap text-indigo-400"></i> Sebesta Chapter 2 Slide Notes
-                </h3>
-                <p id="drawerExamNotes" class="text-xs text-slate-300 leading-relaxed italic"></p>
-            </section>
+        <!-- OOP & Business -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">OOP & Business</h2>
+          <div id="node-flowmatic" onclick="openDetails('flowmatic')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
+            <div class="font-bold text-purple-300">FLOW-MATIC</div>
+            <div class="text-xs text-slate-400">Primary COBOL Ancestor</div>
+          </div>
+          <div id="node-cobol" onclick="openDetails('cobol')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
+            <div class="font-bold text-purple-300">COBOL</div>
+            <div class="text-xs text-slate-400">Business Applications</div>
+          </div>
+          <div id="node-smalltalk" onclick="openDetails('smalltalk')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition mt-8">
+            <div class="font-bold text-purple-300">Smalltalk</div>
+            <div class="text-xs text-slate-400">First Full Pure OOP</div>
+          </div>
+          <div id="node-delphi" onclick="openDetails('delphi')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
+            <div class="font-bold text-purple-300">Delphi</div>
+            <div class="text-xs text-slate-400">Pascal + OOP</div>
+          </div>
         </div>
-    </aside>
 
-    <!-- Data & Script Logic -->
-    <script>
-        // Data Structure strictly from Sebesta Ch. 2
-        const languageData = [
-            // FORTRAN Family
-            {
-                id: 'fortran_0',
-                name: 'FORTRAN 0',
-                category: 'FORTRAN',
-                creator: 'John Backus & IBM Team',
-                target: 'Scientific & Numerical Computing',
-                environment: 'IBM 704 Computer (Hardware floating-point)',
-                parents: [],
-                children: ['fortran_1'],
-                features: [
-                    'Designed in 1954 for the IBM 704',
-                    'First high-level language plan for index registers and floating-point hardware',
-                    'Led to compiler-based software development'
-                ],
-                innovations: [
-                    'Proved that machine code efficiency could be reached with higher-level syntax'
-                ],
-                successes: 'Laid the foundation for all compiler design and high-level imperative languages.',
-                weaknesses: 'No user-defined subroutines, highly dependent on IBM 704 architecture.',
-                examNotes: 'IBM 704 had index registers and floating point hardware in hardware, which directly prompted FORTRAN design.'
-            },
-            {
-                id: 'fortran_1',
-                name: 'FORTRAN I',
-                category: 'FORTRAN',
-                creator: 'John Backus (IBM)',
-                target: 'Scientific Application',
-                environment: 'IBM 704',
-                parents: ['fortran_0'],
-                children: ['fortran_2', 'algol_58'],
-                features: [
-                    'First implemented FORTRAN version (1957)',
-                    'Names up to 6 characters long',
-                    'Formatted I/O (FORMAT statements)',
-                    'User-defined subroutines',
-                    'Post-test DO loops and Arithmetic IF statement'
-                ],
-                innovations: [
-                    'Arithmetic IF: three-way branch depending on expression sign (<0, ==0, >0)'
-                ],
-                successes: 'Dramatically increased programmer productivity; compiler optimization was revolutionary.',
-                weaknesses: 'No implicit type declarations (I-N integer rule), no dynamic memory, rigid fixed-format layout.',
-                examNotes: 'Key exam point: Arithmetic IF statement had 3 target statement labels based on negative, zero, or positive result.'
-            },
-            {
-                id: 'fortran_2',
-                name: 'FORTRAN II',
-                category: 'FORTRAN',
-                creator: 'IBM',
-                target: 'Scientific Computing',
-                environment: 'IBM Systems',
-                parents: ['fortran_1'],
-                children: ['fortran_4'],
-                features: [
-                    'Released in 1958',
-                    'Independent compilation of subroutines/modules',
-                    'Fixed bugs from FORTRAN I'
-                ],
-                innovations: ['Independent compilation without re-compiling main program'],
-                successes: 'Made large software programs practical through modular compilation.',
-                weaknesses: 'Subroutine parameter checking across files did not exist.',
-                examNotes: 'Introduced independent compilation of subroutines.'
-            },
-            {
-                id: 'fortran_4',
-                name: 'FORTRAN IV / 77',
-                category: 'FORTRAN',
-                creator: 'ANSI Standard Board',
-                target: 'Scientific / Engineering',
-                environment: 'Cross-platform mainframes',
-                parents: ['fortran_2'],
-                children: ['fortran_90'],
-                features: [
-                    'Explicit type declarations',
-                    'Logical IF statement',
-                    'Passing subprograms as parameters',
-                    'FORTRAN 77 added character string handling, logical loop control, and IF-THEN-ELSE'
-                ],
-                innovations: ['Logical IF statement replacing arithmetic IF', 'ANSI Standardized (1966 for IV, 1978 for 77)'],
-                successes: 'Dominant language for scientific computing for decades worldwide.',
-                weaknesses: 'Lack of pointers, structured data types, and recursion support.',
-                examNotes: 'FORTRAN 77 added character strings, block IF-THEN-ELSE, and logical DO loops.'
-            },
-            {
-                id: 'fortran_90',
-                name: 'FORTRAN 90 / Modern',
-                category: 'FORTRAN',
-                creator: 'ISO/ANSI Standard Committee',
-                target: 'High Performance & Array Processing',
-                environment: 'Supercomputers & Modern Systems',
-                parents: ['fortran_4'],
-                children: ['fortran_modern'],
-                features: [
-                    'Dynamic memory allocation',
-                    'Array operations & array slicing',
-                    'Modules for encapsulation',
-                    'Free-format source text',
-                    'Pointers and recursive subprograms'
-                ],
-                innovations: ['Native array assignment and vector math syntax'],
-                successes: 'Modernized FORTRAN to compete with modern imperative languages.',
-                weaknesses: 'Large, complex language standard with backward compatibility burdens.',
-                examNotes: 'Added dynamic arrays, array operations, modules, and recursion.'
-            },
-            {
-                id: 'fortran_modern',
-                name: 'FORTRAN 2003 / 2008',
-                category: 'FORTRAN',
-                creator: 'ISO Standard Committee',
-                target: 'Parallel Supercomputing',
-                environment: 'HPC Supercomputing Clusters',
-                parents: ['fortran_90'],
-                children: [],
-                features: [
-                    'Object-Oriented Programming (Classes & Inheritance)',
-                    'C Language Interoperability',
-                    'Co-arrays for parallel computing (FORTRAN 2008)'
-                ],
-                innovations: ['Co-array syntax for high-performance distributed memory parallel processing'],
-                successes: 'Remains top choice for supercomputing and numerical simulations.',
-                weaknesses: 'Niche usage restricted primarily to scientific supercomputing.',
-                examNotes: 'FORTRAN 2003 added object-oriented programming; 2008 added co-arrays for parallel execution.'
-            },
+        <!-- Scripting -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-rose-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">Scripting</h2>
+          <div id="node-perl" onclick="openDetails('perl')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">Perl</div>
+            <div class="text-xs text-slate-400">CGI / Sys Admin</div>
+          </div>
+          <div id="node-python" onclick="openDetails('python')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">Python</div>
+            <div class="text-xs text-slate-400">Independent OO Scripting</div>
+          </div>
+          <div id="node-ruby" onclick="openDetails('ruby')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">Ruby</div>
+            <div class="text-xs text-slate-400">Replaces Perl & Python</div>
+          </div>
+          <div id="node-javascript" onclick="openDetails('javascript')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">JavaScript</div>
+            <div class="text-xs text-slate-400">Client-Side HTML Scripting</div>
+          </div>
+          <div id="node-php" onclick="openDetails('php')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">PHP</div>
+            <div class="text-xs text-slate-400">Server-Side HTML Scripting</div>
+          </div>
+          <div id="node-lua" onclick="openDetails('lua')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
+            <div class="font-bold text-rose-300">Lua</div>
+            <div class="text-xs text-slate-400">Extensible OO Scripting</div>
+          </div>
+        </div>
 
-            // ALGOL Family & Imperative
-            {
-                id: 'algol_58',
-                name: 'ALGOL 58',
-                category: 'ALGOL',
-                creator: 'ACM and GAMM Committee',
-                target: 'Universal Algorithm Specification',
-                environment: 'Machine-Independent Standard',
-                parents: ['fortran_1'],
-                children: ['algol_60'],
-                features: [
-                    'Originally named IAL (International Algorithmic Language)',
-                    'Formalized concept of data types',
-                    'Compound statements (begin...end)',
-                    'Machine-independent syntax'
-                ],
-                innovations: ['First attempt at a universal, hardware-independent algorithmic language'],
-                successes: 'Triggered global standardization efforts in computer science.',
-                weaknesses: 'Never widely implemented due to lack of standard I/O and rapid progression to ALGOL 60.',
-                examNotes: 'Designed by joint US (ACM) and European (GAMM) committees to be machine-independent.'
-            },
-            {
-                id: 'algol_60',
-                name: 'ALGOL 60',
-                category: 'ALGOL',
-                creator: 'International Committee (Backus, Naur, Perlis, etc.)',
-                target: 'Algorithmic Publication',
-                environment: 'Machine-Independent',
-                parents: ['algol_58'],
-                children: ['algol_68', 'pascal', 'simula_67', 'c_lang'],
-                features: [
-                    'Block structure and local scope (begin...end)',
-                    'Pass-by-value and Pass-by-name parameter passing',
-                    'Recursive subroutines',
-                    'Dynamic arrays (stack-allocated)'
-                ],
-                innovations: ['Backus-Naur Form (BNF) introduced to formally describe syntax'],
-                successes: 'Standard format for publishing algorithms for over 30 years.',
-                weaknesses: 'No standard I/O library in specification; IBM rejected it in favor of PL/I.',
-                examNotes: 'BNF was invented to describe ALGOL 60 syntax. First language with block structure and recursion.'
-            },
-            {
-                id: 'algol_68',
-                name: 'ALGOL 68',
-                category: 'ALGOL',
-                creator: 'IFIP Working Group 2.1 (van Wijngaarden)',
-                target: 'General Purpose Computing',
-                environment: 'Theoretical Computer Science',
-                parents: ['algol_60'],
-                children: [],
-                features: [
-                    'Orthogonality concept: small primitive concepts combined without restriction',
-                    'User-defined data types',
-                    'Dynamic arrays and flex arrays',
-                    'Parallel processing primitives'
-                ],
-                innovations: ['Rigorous implementation of orthogonality and formal vW grammars'],
-                successes: 'Profound theoretical impact on programming language design.',
-                weaknesses: 'Extremely difficult to learn and implement; overly complex notation.',
-                examNotes: 'Key exam focus: Orthogonality (combining primitives systematically without arbitrary restrictions).'
-            },
-            {
-                id: 'pascal',
-                name: 'Pascal',
-                category: 'ALGOL',
-                creator: 'Niklaus Wirth',
-                target: 'Teaching Structured Programming',
-                environment: 'Academic Universities',
-                parents: ['algol_60'],
-                children: ['ada'],
-                features: [
-                    'Small, simple, highly structured design',
-                    'Enumeration types and subrange types',
-                    'Case statement and safe pointer types'
-                ],
-                innovations: ['Ideal educational language for structured programming during 1970s-1990s'],
-                successes: 'Became the primary standard teaching language in colleges for two decades.',
-                weaknesses: 'Lack of modularity for large systems; strict array bounds caused limitations.',
-                examNotes: 'Designed explicitly by Wirth to teach structured programming.'
-            },
-            {
-                id: 'c_lang',
-                name: 'C Language',
-                category: 'ALGOL',
-                creator: 'Dennis Ritchie (Bell Labs)',
-                target: 'Systems & Operating System Development',
-                environment: 'UNIX Operating System / DEC PDP-11',
-                parents: ['algol_60', 'bcpl_b'],
-                children: ['cpp', 'java', 'csharp', 'perl'],
-                features: [
-                    'Rich set of operators',
-                    'Pointers and low-level memory addressing',
-                    'Compact syntax',
-                    'No runtime array bounds checking'
-                ],
-                innovations: ['Allowed writing an entire OS (UNIX) in a high-level portable language'],
-                successes: 'Most influential systems programming language in history.',
-                weaknesses: 'Poor type checking; vulnerable to buffer overflows and memory errors.',
-                examNotes: 'Evolved from ALGOL 60 via CPL, BCPL, and B. Created to write UNIX.'
-            },
+        <!-- Functional & Hybrids -->
+        <div class="flex flex-col gap-4 bg-slate-950/40 p-4 rounded-xl border border-slate-800/80">
+          <h2 class="text-sm font-bold text-cyan-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">Functional & Hybrids</h2>
+          <div id="node-lisp" onclick="openDetails('lisp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition">
+            <div class="font-bold text-cyan-300">LISP</div>
+            <div class="text-xs text-slate-400">Functional / AI Research</div>
+          </div>
+          <div id="node-prolog" onclick="openDetails('prolog')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition">
+            <div class="font-bold text-cyan-300">Prolog</div>
+            <div class="text-xs text-slate-400">Logic Programming</div>
+          </div>
+          <div id="node-xslt" onclick="openDetails('xslt')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition mt-12">
+            <div class="font-bold text-cyan-300">XSLT</div>
+            <div class="text-xs text-slate-400">Markup Hybrid (XML)</div>
+          </div>
+          <div id="node-jsp" onclick="openDetails('jsp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition">
+            <div class="font-bold text-cyan-300">JSP</div>
+            <div class="text-xs text-slate-400">Markup Hybrid (Java Pages)</div>
+          </div>
+        </div>
 
-            // BCPL & B Helper
-            {
-                id: 'bcpl_b',
-                name: 'BCPL & B',
-                category: 'ALGOL',
-                creator: 'Martin Richards (BCPL) / Ken Thompson (B)',
-                target: 'Systems Programming',
-                environment: 'DEC PDP Systems',
-                parents: ['algol_60'],
-                children: ['c_lang'],
-                features: [
-                    'Typeless languages (everything treated as word length)',
-                    'Simple compiler and compact memory footprint'
-                ],
-                innovations: ['Simplified high-level system programming for PDP minicomputers'],
-                successes: 'Direct stepping stones to the creation of C.',
-                weaknesses: 'Typeless nature limited safety and high-level abstraction.',
-                examNotes: 'BCPL and B were typeless system languages that led directly to C.'
-            },
+      </div>
+    </div>
+  </main>
 
-            // LISP & Functional
-            {
-                id: 'lisp',
-                name: 'LISP',
-                category: 'LISP',
-                creator: 'John McCarthy (MIT)',
-                target: 'Artificial Intelligence & Symbol Manipulation',
-                environment: 'IBM 704 / Academic Research',
-                parents: [],
-                children: ['scheme', 'common_lisp'],
-                features: [
-                    'Functional programming model based on Lambda Calculus',
-                    'Only two data structures: Atoms and Lists',
-                    'Code and data have same syntax representation (homoiconicity)',
-                    'Automatic garbage collection'
-                ],
-                innovations: ['First functional language, first garbage collector, dynamic memory lists'],
-                successes: 'Dominant language for AI research for decades.',
-                weaknesses: 'Syntax dominated by nested parentheses; slow initial execution.',
-                examNotes: 'Based on Lambda Calculus. Data and code share list representation. Created garbage collection.'
-            },
-            {
-                id: 'scheme',
-                name: 'Scheme',
-                category: 'LISP',
-                creator: 'Sussman & Steele (MIT)',
-                target: 'Computer Science Education & AI',
-                environment: 'MIT Academic Lab',
-                parents: ['lisp'],
-                children: [],
-                features: [
-                    'Small and clean LISP dialect',
-                    'Static / Lexical scoping',
-                    'Functions as first-class entities',
-                    'Tail recursion optimization'
-                ],
-                innovations: ['Lexical scoping and clean functional evaluation in LISP family'],
-                successes: 'Widely used in university computer science curricula.',
-                weaknesses: 'Minimal standard library required many extensions.',
-                examNotes: 'Scheme is noted for its small size, lexical scoping, and functional simplicity.'
-            },
-            {
-                id: 'common_lisp',
-                name: 'Common LISP',
-                category: 'LISP',
-                creator: 'ANSI Committee (Steele, etc.)',
-                target: 'Commercial AI Systems',
-                environment: 'Cross-platform Workstations',
-                parents: ['lisp', 'scheme'],
-                children: [],
-                features: [
-                    'Large, comprehensive standard language',
-                    'Combines features of many LISP dialects',
-                    'CLOS (Common Lisp Object System) for OOP',
-                    'Lexical and dynamic scoping support'
-                ],
-                innovations: ['Unified fragmented LISP dialects into a powerful commercial standard'],
-                successes: 'Standardized industrial functional/hybrid language.',
-                weaknesses: 'Large and complex footprint.',
-                examNotes: 'Created to combine various LISP dialects into a single commercial standard.'
-            },
+  <!-- Sliding Details Panel -->
+  <div id="detailPanel" class="fixed inset-y-0 right-0 w-[450px] bg-slate-950 border-l border-slate-800 shadow-2xl transform translate-x-full transition-transform duration-300 z-50 p-6 overflow-auto">
+    <button onclick="closeDetails()" class="text-slate-400 hover:text-white float-right text-xl font-bold">&times;</button>
+    <div id="panelContent">
+      <h3 id="panelTitle" class="text-2xl font-bold text-indigo-400 mb-2">Language Title</h3>
+      <div id="panelAncestors" class="text-xs text-indigo-300/80 mb-4">Ancestors: None</div>
+      <hr class="border-slate-800 my-4">
+      <div id="panelBody" class="space-y-4 text-sm text-slate-300">
+        <!-- Dynamic Slide Content -->
+      </div>
+    </div>
+  </div>
 
-            // COBOL & Business
-            {
-                id: 'flow_matic',
-                name: 'FLOW-MATIC',
-                category: 'COBOL',
-                creator: 'Grace Hopper (Univac)',
-                target: 'Business Data Processing',
-                environment: 'UNIVAC Systems',
-                parents: [],
-                children: ['cobol'],
-                features: [
-                    'English-like syntax (e.g., READ, WRITE, COMPARE)',
-                    'Data descriptions separated from execution operations'
-                ],
-                innovations: ['First language using English words instead of mathematical formulas'],
-                successes: 'Proved business data processing could use readable English statements.',
-                weaknesses: 'Limited to UNIVAC systems.',
-                examNotes: 'Grace Hopper created FLOW-MATIC; laid the conceptual foundation for COBOL.'
-            },
-            {
-                id: 'cobol',
-                name: 'COBOL',
-                category: 'COBOL',
-                creator: 'CODASYL Committee & US Dept of Defense',
-                target: 'Business Applications & Financial Systems',
-                environment: 'Department of Defense / Business Mainframes',
-                parents: ['flow_matic'],
-                children: [],
-                features: [
-                    'English-like readability and syntax',
-                    'Hierarchical record structures (nested data)',
-                    'Macro facility',
-                    'Strict separation into 4 divisions (Identification, Environment, Data, Procedure)'
-                ],
-                innovations: ['Hierarchical records and data/environment separation'],
-                successes: 'Processed over 80% of world business data for decades.',
-                weaknesses: 'Extremely verbose syntax; poor support for mathematical algorithms.',
-                examNotes: 'DoD mandated COBOL for business contracts. Introduced hierarchical data records.'
-            },
+  <script>
+    // Strict Slide Information Database
+    const langDb = {
+      fortran: {
+        title: "FORTRAN",
+        ancestors: "Designed from scratch for IBM 704",
+        details: `
+          <p><strong>Environment:</strong> IBM 704 hardware (index registers & floating point). Computers were small and unreliable; primary focus was machine efficiency.</p>
+          <p><strong>Design Constraints:</strong> No dynamic storage, primitive I/O, no string handling or decimal arithmetic.</p>
+          <p><strong>Key Features:</strong> Post-test counting loop (DO), Formatted I/O, User-defined subprograms, Arithmetic IF statement.</p>
+          <p><strong>Evaluation:</strong> Dramatically changed computer usage forever. Highly optimizing compilers.</p>
+        `
+      },
+      basic: {
+        title: "BASIC",
+        ancestors: "FORTRAN, ALGOL 60",
+        details: `
+          <p><strong>Creators:</strong> Kemeny & Kurtz at Dartmouth University.</p>
+          <p><strong>Design Goals:</strong> Easy to learn/use for non-science students, pleasant & friendly, fast turnaround, free/private access. User time > computer time.</p>
+          <p><strong>Impact:</strong> First widely used language with time-sharing. Popular modern dialect: Visual BASIC.</p>
+        `
+      },
+      algol58: {
+        title: "ALGOL 58",
+        ancestors: "FORTRAN ideas",
+        details: `
+          <p><strong>Contributions:</strong> Concept of type formalized, names of any length, bracketed subscripts, compound statements (begin...end), semicolon separator, assignment operator (:=).</p>
+          <p><strong>Implementation:</strong> Not meant to be implemented directly, but variations were built (MAD, JOVIAL).</p>
+        `
+      },
+      algol60: {
+        title: "ALGOL 60",
+        ancestors: "ALGOL 58",
+        details: `
+          <p><strong>Overview:</strong> Modified ALGOL 58 at 6-day meeting in Paris.</p>
+          <p><strong>New Features:</strong> Block structure (local scope), Pass-by-value and Pass-by-name parameter passing, Subprogram recursion, Stack-dynamic arrays. Omitted I/O (thought to be machine-dependent).</p>
+          <p><strong>Evaluation:</strong> Standard algorithm publication format for 20+ years. All subsequent imperative languages are based on it. First language defined via BNF.</p>
+        `
+      },
+      algol68: {
+        title: "ALGOL 68",
+        ancestors: "Continued development of ALGOL 60",
+        details: `
+          <p><strong>Core Concept:</strong> Orthogonality.</p>
+          <p><strong>Contributions:</strong> User-defined data structures, Reference types, Flex arrays (dynamic arrays).</p>
+          <p><strong>Impact:</strong> Strong influence on subsequent languages, especially Pascal, C, and Ada.</p>
+        `
+      },
+      simula67: {
+        title: "SIMULA 67",
+        ancestors: "ALGOL 60, SIMULA I",
+        details: `
+          <p><strong>Creators:</strong> Nygaard and Dahl in Norway for system simulation.</p>
+          <p><strong>Primary Contributions:</strong> Co-routines (kind of subprogram), Classes, Objects, and Inheritance.</p>
+        `
+      },
+      pascal: {
+        title: "Pascal",
+        ancestors: "ALGOL 68",
+        details: `
+          <p><strong>Creator:</strong> Niklaus Wirth (former ALGOL 68 committee member).</p>
+          <p><strong>Purpose:</strong> Designed specifically for teaching structured programming. Small, simple, nothing completely new.</p>
+          <p><strong>Impact:</strong> Most widely used language for teaching programming in colleges from mid-1970s to late 1990s.</p>
+        `
+      },
+      ada: {
+        title: "Ada",
+        ancestors: "ALGOL 68",
+        details: `
+          <p><strong>Background:</strong> History's largest design effort (DoD). Named after Augusta Ada Byron.</p>
+          <p><strong>Contributions:</strong> Packages (Data Abstraction), Elaborate Exception Handling, Generic Program Units, Tasking Model Concurrency.</p>
+          <p><strong>Evolution:</strong> Ada 95 added OOP support via type derivation. Popularity decreased after DoD requirement dropped.</p>
+        `
+      },
+      c: {
+        title: "C",
+        ancestors: "BCPL, B, ALGOL 68",
+        details: `
+          <p><strong>Creator:</strong> Dennis Ritchie at Bell Labs for systems programming.</p>
+          <p><strong>Characteristics:</strong> Powerful set of operators, poor type checking. Initially spread via UNIX.</p>
+        `
+      },
+      cpp: {
+        title: "C++",
+        ancestors: "C, SIMULA 67",
+        details: `
+          <p><strong>Creator:</strong> Bjarne Stroustrup at Bell Labs.</p>
+          <p><strong>Features:</strong> Combines imperative and OOP features taken partially from SIMULA 67. Supports both procedural and object-oriented paradigms.</p>
+        `
+      },
+      objc: {
+        title: "Objective-C",
+        ancestors: "C, Smalltalk",
+        details: `
+          <p><strong>Overview:</strong> C plus support for OOP based on Smalltalk. Uses Smalltalk's method calling syntax.</p>
+          <p><strong>Usage:</strong> Used extensively by Apple for systems software.</p>
+        `
+      },
+      go: {
+        title: "Go",
+        ancestors: "Loosely based on C",
+        details: `
+          <p><strong>Creator:</strong> Designed at Google (2009).</p>
+          <p><strong>Characteristics:</strong> Loosely based on C, but quite different. Does not support traditional OOP.</p>
+        `
+      },
+      java: {
+        title: "Java",
+        ancestors: "C++",
+        details: `
+          <p><strong>Creator:</strong> Sun Microsystems (James Gosling).</p>
+          <p><strong>Design:</strong> Simplified C++ (removed pointers, struct, union, enum). Supports only OOP. Introduced JVM concept for portability and applets for web.</p>
+        `
+      },
+      csharp: {
+        title: "C#",
+        ancestors: "C++, Java",
+        details: `
+          <p><strong>Platform:</strong> Core component of Microsoft .NET platform.</p>
+          <p><strong>Design:</strong> Component-based software development. Uses Common Type System (CTS) across .NET languages.</p>
+        `
+      },
+      flowmatic: {
+        title: "FLOW-MATIC",
+        ancestors: "Univac / Grace Hopper",
+        details: `
+          <p><strong>Features:</strong> Primary historical basis for COBOL. Names under constraints, English words for operators, separate code and data, verbs as first word of statements.</p>
+        `
+      },
+      cobol: {
+        title: "COBOL",
+        ancestors: "FLOW-MATIC",
+        details: `
+          <p><strong>Created By:</strong> CODASYL Committee (DoD influence).</p>
+          <p><strong>Goal:</strong> Business data processing. Simple English look, easy to use.</p>
+          <p><strong>Contributions:</strong> First macro facility, Hierarchical data structures (records), Nested selections, long names with hyphens.</p>
+        `
+      },
+      smalltalk: {
+        title: "Smalltalk",
+        ancestors: "Simula 67 ideas",
+        details: `
+          <p><strong>Creators:</strong> Alan Kay, Adele Goldberg at Xerox PARC.</p>
+          <p><strong>Impact:</strong> First full implementation of pure OOP (Abstraction, Inheritance, Dynamic Binding). Pioneered graphical user interfaces (GUI).</p>
+        `
+      },
+      delphi: {
+        title: "Delphi",
+        ancestors: "Pascal",
+        details: `
+          <p><strong>Overview:</strong> Borland Delphi. Pascal plus features to support OOP. More elegant and safer than C++.</p>
+        `
+      },
+      perl: {
+        title: "Perl",
+        ancestors: "sh, awk, C",
+        details: `
+          <p><strong>Creator:</strong> Larry Wall.</p>
+          <p><strong>Features:</strong> Implicitly declared variables, 3 namespaces denoted by special leading characters. Widely used for Web CGI scripting and UNIX system admin.</p>
+        `
+      },
+      python: {
+        title: "Python",
+        ancestors: "Independent OO Scripting Language",
+        details: `
+          <p><strong>Overview:</strong> Interpreted OO scripting/programming language.</p>
+          <p><strong>Features:</strong> Used for CGI programming & form processing. Built-in support for lists, tuples, and hashes.</p>
+        `
+      },
+      ruby: {
+        title: "Ruby",
+        ancestors: "Began as a replacement for Perl & Python",
+        details: `
+          <p><strong>Creator:</strong> Yukihiro Matsumoto ("Matz") in Japan.</p>
+          <p><strong>Features:</strong> Pure object-oriented scripting language (all data are objects). Operators are redefinable methods.</p>
+        `
+      },
+      javascript: {
+        title: "JavaScript",
+        ancestors: "Netscape / Sun",
+        details: `
+          <p><strong>Overview:</strong> Client-side HTML-embedded scripting language for dynamic HTML documents.</p>
+          <p><strong>Note:</strong> Related to Java strictly through similar syntax (purely interpreted).</p>
+        `
+      },
+      php: {
+        title: "PHP",
+        ancestors: "Web Scripting",
+        details: `
+          <p><strong>Overview:</strong> Hypertext Preprocessor. Server-side HTML-embedded scripting language.</p>
+          <p><strong>Usage:</strong> Form processing and database access through Web.</p>
+        `
+      },
+      lua: {
+        title: "Lua",
+        ancestors: "Web Scripting",
+        details: `
+          <p><strong>Features:</strong> Interpreted OO scripting language. Single data structure: table (supports lists, tuples, hashes). Highly extensible.</p>
+        `
+      },
+      lisp: {
+        title: "LISP",
+        ancestors: "MIT / John McCarthy",
+        details: `
+          <p><strong>Purpose:</strong> First functional programming language designed for AI list processing.</p>
+          <p><strong>Data Types:</strong> Only atoms and lists. Syntax based on lambda calculus. Dialects include Scheme & Common LISP.</p>
+        `
+      },
+      prolog: {
+        title: "Prolog",
+        ancestors: "Formal Logic",
+        details: `
+          <p><strong>Creators:</strong> Colmerauer, Roussel (Marseille) & Kowalski (Edinburgh).</p>
+          <p><strong>Concept:</strong> Non-procedural logic programming. Intelligent database using inference process on knowledge base.</p>
+        `
+      },
+      xslt: {
+        title: "XSLT",
+        ancestors: "XML / Hybrid",
+        details: `
+          <p><strong>Overview:</strong> Extensible Stylesheet Language Transformation. Transforms XML documents for display.</p>
+          <p><strong>Hybrid Feature:</strong> Contains programming constructs (e.g., looping) inside markup format.</p>
+        `
+      },
+      jsp: {
+        title: "JSP",
+        ancestors: "Java / HTML Hybrid",
+        details: `
+          <p><strong>Overview:</strong> Java Server Pages. Collection of technologies to support dynamic Web documents.</p>
+          <p><strong>Hybrid Feature:</strong> Includes programming constructs in the form of HTML elements (JSTL library).</p>
+        `
+      }
+    };
 
-            // Object-Oriented & Smalltalk
-            {
-                id: 'simula_67',
-                name: 'SIMULA 67',
-                category: 'OOP',
-                creator: 'Ole-Johan Dahl & Kristen Nygaard (Norway)',
-                target: 'System Simulation & General Purpose',
-                environment: 'Norwegian Computing Center',
-                parents: ['algol_60'],
-                children: ['smalltalk', 'cpp'],
-                features: [
-                    'Class concept (encapsulating data and operations)',
-                    'Objects and Inheritance',
-                    'Co-routines for discrete event simulation'
-                ],
-                innovations: ['Invented Classes, Objects, and Subclassing/Inheritance'],
-                successes: 'Laid the foundational concepts for all object-oriented programming.',
-                weaknesses: 'Not widely adopted outside simulation domains.',
-                examNotes: 'First language to introduce Classes, Objects, and Inheritance.'
-            },
-            {
-                id: 'smalltalk',
-                name: 'Smalltalk',
-                category: 'OOP',
-                creator: 'Alan Kay & Adele Goldberg (Xerox PARC)',
-                target: 'Interactive Graphical Computing',
-                environment: 'Xerox Alto Workstation / Dynabook Vision',
-                parents: ['simula_67'],
-                children: ['ruby', 'objective_c'],
-                features: [
-                    'Pure Object-Oriented model (everything is an object)',
-                    'Dynamic binding and message passing',
-                    'Integrated graphical user interface (GUI) desktop environment',
-                    'Bytecode execution on dynamic virtual machine'
-                ],
-                innovations: ['Pioneered full object-oriented paradigm and modern GUI desktop interface'],
-                successes: 'Pioneered modern OO and GUI environments.',
-                weaknesses: 'Slower execution compared to compiled procedural languages.',
-                examNotes: 'First PURE Object-Oriented language. Developed alongside the modern GUI at Xerox PARC.'
-            },
-            {
-                id: 'cpp',
-                name: 'C++',
-                category: 'OOP',
-                creator: 'Bjarne Stroustrup (Bell Labs)',
-                target: 'Systems Programming with Abstraction',
-                environment: 'Bell Labs',
-                parents: ['c_lang', 'simula_67'],
-                children: ['java', 'csharp'],
-                features: [
-                    'Combines C procedural speed with Simula 67 object structures',
-                    'Multiple inheritance, operator overloading, templates (generics)',
-                    'Static type checking with class flexibility'
-                ],
-                innovations: ['Hybrid OO language providing high performance and object encapsulation'],
-                successes: 'Became the dominant language for systems, graphics, and game engines.',
-                weaknesses: 'High complexity, huge language surface area, manual memory management.',
-                examNotes: 'Created by Stroustrup by combining C efficiency with Simula 67 classes.'
-            },
+    // Connections strictly matching Chapter 2 slides & diagrams
+    const connections = [
+      { from: 'algol58', to: 'algol60' },
+      { from: 'algol60', to: 'algol68' },
+      { from: 'algol60', to: 'simula67' },
+      { from: 'algol60', to: 'basic' },
+      { from: 'fortran', to: 'basic' },
+      { from: 'algol68', to: 'pascal' },
+      { from: 'algol68', to: 'c' },
+      { from: 'algol68', to: 'ada' },
+      { from: 'flowmatic', to: 'cobol' },
+      { from: 'c', to: 'cpp' },
+      { from: 'simula67', to: 'cpp' },
+      { from: 'c', to: 'objc' },
+      { from: 'smalltalk', to: 'objc' },
+      { from: 'c', to: 'go' },
+      { from: 'pascal', to: 'delphi' },
+      { from: 'cpp', to: 'java' },
+      { from: 'cpp', to: 'csharp' },
+      { from: 'java', to: 'csharp' },
+      { from: 'perl', to: 'ruby' },
+      { from: 'python', to: 'ruby' },
+      { from: 'java', to: 'jsp' }
+    ];
 
-            // Ada & Structured Languages
-            {
-                id: 'ada',
-                name: 'Ada & Ada 95',
-                category: 'ALGOL',
-                creator: 'Jean Ichbiah (Honeywell Bull) for DoD',
-                target: 'Embedded Defense Systems & Real-Time Computing',
-                environment: 'US Department of Defense requirement',
-                parents: ['pascal'],
-                children: [],
-                features: [
-                    'Packages (data abstraction & modularity)',
-                    'Exception handling mechanisms',
-                    'Generic subprograms and packages',
-                    'Tasks for concurrent execution',
-                    'Ada 95 added OOP (tagged types)'
-                ],
-                innovations: ['Most comprehensive design effort for safety-critical real-time concurrent software'],
-                successes: 'High reliability in defense, aerospace, and transport systems.',
-                weaknesses: 'Initial compilers were extremely large and slow to build.',
-                examNotes: 'Named after Augusta Ada Byron (first programmer). Introduced Packages, Exception Handling, and Tasks.'
-            },
+    function drawConnections() {
+      const svg = document.getElementById('svgCanvas');
+      const container = document.getElementById('graphContainer').getBoundingClientRect();
+      
+      // Clear existing lines
+      svg.innerHTML = `
+        <defs>
+          <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
+            <path d="M 0 0 L 10 5 L 0 10 z" fill="#6366f1" />
+          </marker>
+        </defs>
+      `;
 
-            // Web & Scripting Languages
-            {
-                id: 'perl',
-                name: 'Perl',
-                category: 'WEB',
-                creator: 'Larry Wall',
-                target: 'System Administration & Web CGI',
-                environment: 'UNIX Text Processing',
-                parents: ['c_lang'],
-                children: ['php', 'python', 'ruby'],
-                features: [
-                    'Powerful regular expression parsing',
-                    'Three distinct namespaces: Scalars ($), Arrays (@), Hashes (%)',
-                    'Implicit variables and pragmatic syntax'
-                ],
-                innovations: ['Became the primary early web language (CGI scripting)'],
-                successes: 'Essential tool for early web development and system scripts.',
-                weaknesses: 'Cryptic syntax ("write-only code").',
-                examNotes: '3 main variable type namespaces denoted by leading character ($ scalar, @ array, % hash).'
-            },
-            {
-                id: 'python',
-                name: 'Python',
-                category: 'WEB',
-                creator: 'Guido van Rossum',
-                target: 'General Purpose & Scripting',
-                environment: 'Amoeba OS / Open Source',
-                parents: ['c_lang', 'perl', 'abc'],
-                children: [],
-                features: [
-                    'Indentation-based block structure',
-                    'Tuples, Lists, and Dictionary hashes built-in',
-                    'Object-oriented and dynamic dynamic typing',
-                    'Garbage collection and large standard library'
-                ],
-                innovations: ['Focus on code readability and clean syntax design'],
-                successes: 'Dominant language for Data Science, AI, and modern web backends.',
-                weaknesses: 'Dynamic interpretation speed limitations.',
-                examNotes: 'Focuses on readability; uses indentation for statement grouping.'
-            },
-            {
-                id: 'javascript',
-                name: 'JavaScript',
-                category: 'WEB',
-                creator: 'Brendan Eich (Netscape)',
-                target: 'Client-Side Web Browser Scripting',
-                environment: 'Netscape Navigator Browser',
-                parents: ['c_lang', 'scheme', 'java'],
-                children: [],
-                features: [
-                    'Dynamic prototype-based object inheritance',
-                    'First-class functions',
-                    'Asynchronous event loop architecture',
-                    'Client-side HTML DOM manipulation'
-                ],
-                innovations: ['Ubiquitous execution inside browser engines worldwide'],
-                successes: 'Universal standard for client-side web applications.',
-                weaknesses: 'Dynamic typing gotchas, historical coercion rules.',
-                examNotes: 'Developed at Netscape by Eich; dynamic prototype-based language, unrelated to Java runtime.'
-            },
-            {
-                id: 'java',
-                name: 'Java',
-                category: 'WEB',
-                creator: 'James Gosling (Sun Microsystems)',
-                target: 'Embedded Devices & Web Applets',
-                environment: 'Oak Project / Web Browsers',
-                parents: ['cpp', 'c_lang'],
-                children: ['csharp'],
-                features: [
-                    'Bytecode compiled to Java Virtual Machine (JVM)',
-                    'Implicit garbage collection',
-                    'No pointers, structs, or unions',
-                    'Strict single inheritance with interfaces'
-                ],
-                innovations: ['"Write Once, Run Anywhere" via JVM portable execution model'],
-                successes: 'Dominant enterprise server and Android mobile app language.',
-                weaknesses: 'Verbose syntax; JVM startup overhead.',
-                examNotes: 'Omitted pointers, structs, and dynamic unions for security/reliability.'
-            },
-            {
-                id: 'csharp',
-                name: 'C#',
-                category: 'WEB',
-                creator: 'Anders Hejlsberg (Microsoft)',
-                target: 'Enterprise .NET Applications',
-                environment: 'Microsoft .NET Framework',
-                parents: ['cpp', 'java'],
-                children: [],
-                features: [
-                    'Common Type System (CTS) integration',
-                    'Properties, Events, and Delegates',
-                    'Value and Reference types explicit split',
-                    'LINQ query syntax'
-                ],
-                innovations: ['Seamless component-based engineering on managed runtime'],
-                successes: 'Core language for Windows enterprise, web backends, and Unity game engine.',
-                weaknesses: 'Tightly coupled initially to Windows ecosystem.',
-                examNotes: 'Based on C++ and Java; part of Microsoft .NET architecture.'
-            },
-            {
-                id: 'php',
-                name: 'PHP',
-                category: 'WEB',
-                creator: 'Rasmus Lerdorf',
-                target: 'Server-Side Dynamic Web Pages',
-                environment: 'Personal Home Page tools',
-                parents: ['perl', 'c_lang'],
-                children: [],
-                features: [
-                    'HTML-embedded scripting',
-                    'Direct database connection handling',
-                    'Form handling focus'
-                ],
-                innovations: ['Simplified dynamic server-rendered web applications'],
-                successes: 'Powers millions of dynamic websites (WordPress, etc.).',
-                weaknesses: 'Inconsistent function naming standards in legacy versions.',
-                examNotes: 'Created by Lerdorf for server-side dynamic HTML web form processing.'
-            },
-            {
-                id: 'ruby',
-                name: 'Ruby',
-                category: 'WEB',
-                creator: 'Yukihiro "Matz" Matsumoto',
-                target: 'Scripting & Web Systems',
-                environment: 'Japanese Software Dev',
-                parents: ['smalltalk', 'perl'],
-                children: [],
-                features: [
-                    'Pure Object-Oriented (every primitive is an object)',
-                    'Flexible syntax and block closures',
-                    'Metaprogramming capabilities'
-                ],
-                innovations: ['Blended Smalltalk OO philosophy with Perl practical scripting usability'],
-                successes: 'Popularized rapid web development with Ruby on Rails.',
-                weaknesses: 'Slower execution runtime speed compared to compiled languages.',
-                examNotes: 'Created by Matz; purely object-oriented scripting language.'
-            },
+      connections.forEach(conn => {
+        const fromElem = document.getElementById(`node-${conn.from}`);
+        const toElem = document.getElementById(`node-${conn.to}`);
 
-            // Specialized & Logic Languages
-            {
-                id: 'prolog',
-                name: 'Prolog',
-                category: 'LISP',
-                creator: 'Colmerauer, Roussel & Kowalski',
-                target: 'Artificial Intelligence & Logic Queries',
-                environment: 'University of Aix-Marseille',
-                parents: [],
-                children: [],
-                features: [
-                    'Non-procedural logic programming',
-                    'Based on predicate calculus & Horn clauses',
-                    'Database of Facts and Rules',
-                    'Built-in Inference engine with unification and backtracking'
-                ],
-                innovations: ['Programmer states WHAT is true, not HOW to compute it'],
-                successes: 'Standard language for expert systems and logical deduction.',
-                weaknesses: 'Inefficient execution for procedural mathematical operations.',
-                examNotes: 'Non-procedural language based on formal logic; uses facts, rules, and inference engine.'
-            }
-        ];
+        if (fromElem && toElem) {
+          const r1 = fromElem.getBoundingClientRect();
+          const r2 = toElem.getBoundingClientRect();
 
-        // Layout Columns Configuration (No years on nodes)
-        const columns = [
-            { id: 'FORTRAN', title: 'FORTRAN Family', color: 'border-blue-500/40 text-blue-400' },
-            { id: 'ALGOL', title: 'ALGOL Ancestry', color: 'border-cyan-500/40 text-cyan-400' },
-            { id: 'COBOL', title: 'COBOL & Business', color: 'border-pink-500/40 text-pink-400' },
-            { id: 'LISP', title: 'LISP & Functional', color: 'border-purple-500/40 text-purple-400' },
-            { id: 'OOP', title: 'Object-Oriented', color: 'border-emerald-500/40 text-emerald-400' },
-            { id: 'WEB', title: 'Web & Scripting', color: 'border-amber-500/40 text-amber-400' }
-        ];
+          const x1 = (r1.left + r1.width / 2) - container.left;
+          const y1 = (r1.top + r1.height / 2) - container.top;
+          const x2 = (r2.left + r2.width / 2) - container.left;
+          const y2 = (r2.top + r2.height / 2) - container.top;
 
-        // State
-        let currentZoom = 1.0;
-        let panX = 40;
-        let panY = 20;
-        let isDragging = false;
-        let startX, startY;
-        let selectedNodeId = null;
-        let currentFilter = 'ALL';
+          const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
+          const dx = Math.abs(x2 - x1) / 2;
+          const d = `M ${x1} ${y1} C ${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}`;
 
-        // DOM elements
-        const viewport = document.getElementById('viewport');
-        const graphContainer = document.getElementById('graphContainer');
-        const columnsWrapper = document.getElementById('columnsWrapper');
-        const svgCanvas = document.getElementById('svgCanvas');
-        const detailDrawer = document.getElementById('detailDrawer');
-        const searchInput = document.getElementById('searchInput');
-
-        // Initialize App
-        function initApp() {
-            renderColumns();
-            renderNodes();
-            // Draw lines after elements are placed
-            setTimeout(() => {
-                drawConnections();
-            }, 100);
-
-            setupInteractionListeners();
+          path.setAttribute('d', d);
+          path.setAttribute('stroke', '#6366f1');
+          path.setAttribute('stroke-width', '2');
+          path.setAttribute('fill', 'none');
+          path.setAttribute('opacity', '0.5');
+          path.setAttribute('marker-end', 'url(#arrow)');
+          svg.appendChild(path);
         }
+      });
+    }
 
-        // Render Column Containers
-        function renderColumns() {
-            columnsWrapper.innerHTML = '';
-            columns.forEach(col => {
-                const colEl = document.createElement('div');
-                colEl.className = 'w-64 flex flex-col gap-5 min-h-[1200px] flex-shrink-0';
-                colEl.dataset.colCategory = col.id;
-                colEl.innerHTML = `
-                    <div class="glass-panel p-3 rounded-xl border ${col.color} flex items-center justify-between sticky top-0 z-20">
-                        <h2 class="font-bold text-sm tracking-wide">${col.title}</h2>
-                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-400 font-mono" id="count-${col.id}">0</span>
-                    </div>
-                    <div class="node-container flex flex-col gap-4 flex-1" id="col-body-${col.id}"></div>
-                `;
-                columnsWrapper.appendChild(colEl);
-            });
+    function openDetails(key) {
+      const data = langDb[key];
+      if (!data) return;
+      
+      document.getElementById('panelTitle').innerText = data.title;
+      document.getElementById('panelAncestors').innerText = "Ancestors: " + data.ancestors;
+      document.getElementById('panelBody').innerHTML = data.details;
+      document.getElementById('detailPanel').classList.remove('translate-x-full');
+    }
+
+    function closeDetails() {
+      document.getElementById('detailPanel').classList.add('translate-x-full');
+    }
+
+    function filterGraph() {
+      const query = document.getElementById('searchInput').value.toLowerCase();
+      document.querySelectorAll('.lang-node').forEach(node => {
+        const text = node.innerText.toLowerCase();
+        if (text.includes(query)) {
+          node.style.opacity = '1';
+          node.classList.add('ring-2', 'ring-indigo-500');
+        } else {
+          node.style.opacity = query ? '0.2' : '1';
+          node.classList.remove('ring-2', 'ring-indigo-500');
         }
+      });
+    }
 
-        // Render Language Nodes into Columns
-        function renderNodes() {
-            languageData.forEach(lang => {
-                const targetCol = document.getElementById(`col-body-${lang.category}`);
-                if (!targetCol) return;
-
-                const card = document.createElement('div');
-                card.id = `node-${lang.id}`;
-                card.dataset.id = lang.id;
-                card.dataset.category = lang.category;
-                card.className = `glass-card p-4 rounded-xl cursor-pointer relative z-10 text-left group transition-all duration-200 border border-slate-700/60`;
-
-                card.innerHTML = `
-                    <div class="flex items-start justify-between mb-1.5">
-                        <h3 class="font-bold text-sm text-slate-100 group-hover:text-blue-400 transition-colors">${lang.name}</h3>
-                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
-                    </div>
-                    <p class="text-[11px] text-slate-400 line-clamp-1 mb-2">${lang.creator}</p>
-                    <div class="flex flex-wrap gap-1">
-                        <span class="text-[9px] px-2 py-0.5 rounded bg-slate-800/90 text-slate-300 font-medium">${lang.target.split('&')[0]}</span>
-                    </div>
-                `;
-
-                // Hover highlight connections
-                card.addEventListener('mouseenter', () => highlightConnections(lang.id));
-                card.addEventListener('mouseleave', clearHighlights);
-
-                // Click open detail drawer
-                card.addEventListener('click', (e) => {
-                    e.stopPropagation();
-                    selectNode(lang.id);
-                    openDrawer(lang);
-                });
-
-                targetCol.appendChild(card);
-            });
-
-            // Update Counts
-            columns.forEach(col => {
-                const countEl = document.getElementById(`count-${col.id}`);
-                const count = languageData.filter(l => l.category === col.id).length;
-                if (countEl) countEl.innerText = count;
-            });
-        }
-
-        // Draw SVG Connection Lines
-        function drawConnections() {
-            svgCanvas.innerHTML = ''; // Clear existing lines
-
-            const containerRect = graphContainer.getBoundingClientRect();
-
-            languageData.forEach(lang => {
-                const sourceNode = document.getElementById(`node-${lang.id}`);
-                if (!sourceNode) return;
-
-                const sourceRect = sourceNode.getBoundingClientRect();
-
-                // Compute position relative to graph container
-                const startX = (sourceRect.right - containerRect.left) / currentZoom;
-                const startY = (sourceRect.top + sourceRect.height / 2 - containerRect.top) / currentZoom;
-
-                lang.children.forEach(childId => {
-                    const targetNode = document.getElementById(`node-${childId}`);
-                    if (!targetNode) return;
-
-                    const targetRect = targetNode.getBoundingClientRect();
-                    const endX = (targetRect.left - containerRect.left) / currentZoom;
-                    const endY = (targetRect.top + targetRect.height / 2 - containerRect.top) / currentZoom;
-
-                    // Smooth Curved Path
-                    const controlDist = Math.max(40, Math.abs(endX - startX) * 0.45);
-                    const pathData = `M ${startX} ${startY} C ${startX + controlDist} ${startY}, ${endX - controlDist} ${endY}, ${endX} ${endY}`;
-
-                    const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
-                    path.setAttribute('d', pathData);
-                    path.setAttribute('class', 'connection-line');
-                    path.dataset.parent = lang.id;
-                    path.dataset.child = childId;
-
-                    svgCanvas.appendChild(path);
-                });
-            });
-        }
-
-        // Highlight Connections on Hover
-        function highlightConnections(nodeId) {
-            const node = languageData.find(l => l.id === nodeId);
-            if (!node) return;
-
-            // Parents & Children Sets
-            const parentIds = new Set(node.parents);
-            const childIds = new Set(node.children);
-
-            // Highlight Path lines
-            document.querySelectorAll('.connection-line').forEach(path => {
-                const p = path.dataset.parent;
-                const c = path.dataset.child;
-
-                if (p === nodeId) {
-                    path.classList.add('highlight-child');
-                } else if (c === nodeId) {
-                    path.classList.add('highlight-parent');
-                }
-            });
-
-            // Highlight Cards
-            parentIds.forEach(id => {
-                const el = document.getElementById(`node-${id}`);
-                if (el) el.classList.add('node-highlight-parent');
-            });
-
-            childIds.forEach(id => {
-                const el = document.getElementById(`node-${id}`);
-                if (el) el.classList.add('node-highlight-child');
-            });
-        }
-
-        // Clear Connection Highlights
-        function clearHighlights() {
-            document.querySelectorAll('.connection-line').forEach(path => {
-                path.classList.remove('highlight-parent', 'highlight-child');
-            });
-            document.querySelectorAll('.glass-card').forEach(card => {
-                card.classList.remove('node-highlight-parent', 'node-highlight-child');
-            });
-        }
-
-        // Select Node permanently
-        function selectNode(nodeId) {
-            selectedNodeId = nodeId;
-            document.querySelectorAll('.glass-card').forEach(card => {
-                card.classList.remove('node-selected');
-            });
-            const selEl = document.getElementById(`node-${nodeId}`);
-            if (selEl) selEl.classList.add('node-selected');
-        }
-
-        // Open Slide Detail Drawer
-        function openDrawer(lang) {
-            document.getElementById('drawerTitle').innerText = lang.name;
-            document.getElementById('drawerCategory').innerText = lang.category + ' Family';
-            document.getElementById('drawerMeta').innerText = `Created by ${lang.creator}`;
-            document.getElementById('drawerCreator').innerText = lang.creator;
-            document.getElementById('drawerTarget').innerText = lang.target;
-            document.getElementById('drawerEnv').innerText = lang.environment;
-            document.getElementById('drawerSuccesses').innerText = lang.successes;
-            document.getElementById('drawerWeaknesses').innerText = lang.weaknesses;
-            document.getElementById('drawerExamNotes').innerText = lang.examNotes;
-
-            // Populate Features
-            const featList = document.getElementById('drawerFeatures');
-            featList.innerHTML = lang.features.map(f => `<li>${f}</li>`).join('');
-
-            // Populate Innovations
-            const innovList = document.getElementById('drawerInnovations');
-            innovList.innerHTML = lang.innovations.map(i => `<li>${i}</li>`).join('');
-
-            // Populate Parents Pills
-            const parentContainer = document.getElementById('drawerParents');
-            if (lang.parents.length === 0) {
-                parentContainer.innerHTML = '<span class="text-slate-500 italic">None (Root Language)</span>';
-            } else {
-                parentContainer.innerHTML = lang.parents.map(pId => {
-                    const pLang = languageData.find(l => l.id === pId);
-                    return `<button onclick="jumpToNode('${pId}')" class="px-2 py-0.5 bg-sky-950 text-sky-300 border border-sky-800/60 rounded text-[10px] hover:bg-sky-900 transition">${pLang ? pLang.name : pId}</button>`;
-                }).join('');
-            }
-
-            // Populate Children Pills
-            const childContainer = document.getElementById('drawerChildren');
-            if (lang.children.length === 0) {
-                childContainer.innerHTML = '<span class="text-slate-500 italic">None</span>';
-            } else {
-                childContainer.innerHTML = lang.children.map(cId => {
-                    const cLang = languageData.find(l => l.id === cId);
-                    return `<button onclick="jumpToNode('${cId}')" class="px-2 py-0.5 bg-purple-950 text-purple-300 border border-purple-800/60 rounded text-[10px] hover:bg-purple-900 transition">${cLang ? cLang.name : cId}</button>`;
-                }).join('');
-            }
-
-            detailDrawer.classList.remove('translate-x-full');
-        }
-
-        // Close Drawer
-        function closeDrawer() {
-            detailDrawer.classList.add('translate-x-full');
-            if (selectedNodeId) {
-                const selEl = document.getElementById(`node-${selectedNodeId}`);
-                if (selEl) selEl.classList.remove('node-selected');
-                selectedNodeId = null;
-            }
-        }
-
-        // Jump to node from lineage pill
-        window.jumpToNode = function(nodeId) {
-            const targetLang = languageData.find(l => l.id === nodeId);
-            if (!targetLang) return;
-
-            selectNode(nodeId);
-            openDrawer(targetLang);
-            highlightConnections(nodeId);
-
-            // Center view on node
-            const nodeEl = document.getElementById(`node-${nodeId}`);
-            if (nodeEl) {
-                const rect = nodeEl.getBoundingClientRect();
-                const viewportWidth = viewport.clientWidth;
-                const viewportHeight = viewport.clientHeight;
-
-                panX += (viewportWidth / 2) - (rect.left + rect.width / 2);
-                panY += (viewportHeight / 2) - (rect.top + rect.height / 2);
-                updateTransform();
-            }
-        };
-
-        // Pan & Zoom Event Listeners
-        function setupInteractionListeners() {
-            // Drag / Pan viewport
-            viewport.addEventListener('mousedown', (e) => {
-                if (e.target.closest('#detailDrawer') || e.target.closest('header')) return;
-                isDragging = true;
-                startX = e.clientX - panX;
-                startY = e.clientY - panY;
-            });
-
-            window.addEventListener('mousemove', (e) => {
-                if (!isDragging) return;
-                panX = e.clientX - startX;
-                panY = e.clientY - startY;
-                updateTransform();
-            });
-
-            window.addEventListener('mouseup', () => {
-                isDragging = false;
-            });
-
-            // Wheel Zoom
-            viewport.addEventListener('wheel', (e) => {
-                e.preventDefault();
-                const zoomFactor = 0.08;
-                if (e.deltaY < 0) {
-                    currentZoom = Math.min(currentZoom + zoomFactor, 1.8);
-                } else {
-                    currentZoom = Math.max(currentZoom - zoomFactor, 0.5);
-                }
-                updateTransform();
-            }, { passive: false });
-
-            // Zoom Control Buttons
-            document.getElementById('zoomInBtn').addEventListener('click', () => {
-                currentZoom = Math.min(currentZoom + 0.15, 1.8);
-                updateTransform();
-            });
-
-            document.getElementById('zoomOutBtn').addEventListener('click', () => {
-                currentZoom = Math.max(currentZoom - 0.15, 0.5);
-                updateTransform();
-            });
-
-            document.getElementById('centerBtn').addEventListener('click', resetView);
-            document.getElementById('resetViewBtn').addEventListener('click', resetView);
-
-            // Close Drawer
-            document.getElementById('closeDrawerBtn').addEventListener('click', closeDrawer);
-
-            // Search Filter
-            searchInput.addEventListener('input', (e) => {
-                const query = e.target.value.toLowerCase().trim();
-                languageData.forEach(lang => {
-                    const nodeEl = document.getElementById(`node-${lang.id}`);
-                    if (!nodeEl) return;
-
-                    const matches = lang.name.toLowerCase().includes(query) ||
-                                    lang.creator.toLowerCase().includes(query) ||
-                                    lang.target.toLowerCase().includes(query) ||
-                                    lang.features.some(f => f.toLowerCase().includes(query));
-
-                    if (matches || query === '') {
-                        nodeEl.style.opacity = '1';
-                        nodeEl.style.pointerEvents = 'auto';
-                    } else {
-                        nodeEl.style.opacity = '0.25';
-                    }
-                });
-            });
-
-            // Category Filter Pills
-            document.querySelectorAll('.filter-btn').forEach(btn => {
-                btn.addEventListener('click', (e) => {
-                    document.querySelectorAll('.filter-btn').forEach(b => {
-                        b.classList.remove('bg-blue-600', 'text-white');
-                        b.classList.add('bg-slate-800', 'text-slate-300');
-                    });
-                    btn.classList.remove('bg-slate-800', 'text-slate-300');
-                    btn.classList.add('bg-blue-600', 'text-white');
-
-                    const category = btn.dataset.category;
-                    currentFilter = category;
-
-                    document.querySelectorAll('#columnsWrapper > div').forEach(col => {
-                        if (category === 'ALL' || col.dataset.colCategory === category) {
-                            col.style.display = 'flex';
-                        } else {
-                            col.style.display = 'none';
-                        }
-                    });
-
-                    // Redraw SVGs after column visibility update
-                    setTimeout(drawConnections, 50);
-                });
-            });
-
-            // Window Resize recalculate lines
-            window.addEventListener('resize', () => {
-                drawConnections();
-            });
-        }
-
-        // Apply Pan & Zoom Transform
-        function updateTransform() {
-            graphContainer.style.transform = `translate(${panX}px, ${panY}px) scale(${currentZoom})`;
-            drawConnections();
-        }
-
-        // Reset View Positioning
-        function resetView() {
-            currentZoom = 1.0;
-            panX = 40;
-            panY = 20;
-            updateTransform();
-        }
-
-        // Start App on Load
-        window.onload = initApp;
-    </script>
+    window.addEventListener('load', () => {
+      setTimeout(drawConnections, 200);
+    });
+    window.addEventListener('resize', drawConnections);
+  </script>
 </body>
 </html>
