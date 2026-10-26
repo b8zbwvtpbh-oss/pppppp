@@ -31,10 +31,10 @@
   <header class="border-b border-slate-800 bg-slate-950/80 backdrop-blur sticky top-0 z-30 px-6 py-4 flex flex-wrap justify-between items-center gap-4">
     <div>
       <h1 class="text-2xl font-bold text-indigo-400">Programming Language Genealogy</h1>
-      <p class="text-xs text-slate-400">Strictly mapped from Sebesta Chapter 2 slides</p>
+      <p class="text-xs text-slate-400">Sebesta Chapter 2 Strict Lineage & Categories</p>
     </div>
     <div class="flex items-center gap-3">
-      <input type="text" id="searchInput" oninput="filterGraph()" placeholder="Search language..." class="bg-slate-800 text-sm text-slate-200 px-4 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-indigo-500 w-64">
+      <input type="text" id="searchInput" oninput="filterGraph()" placeholder="Search language or category..." class="bg-slate-800 text-sm text-slate-200 px-4 py-2 rounded-lg border border-slate-700 focus:outline-none focus:border-indigo-500 w-64">
     </div>
   </header>
 
@@ -59,7 +59,7 @@
           <h2 class="text-sm font-bold text-amber-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">FORTRAN Line</h2>
           <div id="node-fortran" onclick="openDetails('fortran')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-amber-500/30 cursor-pointer transition">
             <div class="font-bold text-amber-300">FORTRAN</div>
-            <div class="text-xs text-slate-400">Scientific & Numerics</div>
+            <div class="text-xs text-slate-400">Scientific Programming</div>
           </div>
           <div id="node-basic" onclick="openDetails('basic')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-amber-500/30 cursor-pointer transition mt-8">
             <div class="font-bold text-amber-300">BASIC</div>
@@ -72,7 +72,7 @@
           <h2 class="text-sm font-bold text-emerald-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">ALGOL Line</h2>
           <div id="node-algol58" onclick="openDetails('algol58')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">ALGOL 58</div>
-            <div class="text-xs text-slate-400">Type Concept Formalized</div>
+            <div class="text-xs text-slate-400">Imperative Core</div>
           </div>
           <div id="node-algol60" onclick="openDetails('algol60')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">ALGOL 60</div>
@@ -80,19 +80,19 @@
           </div>
           <div id="node-algol68" onclick="openDetails('algol68')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">ALGOL 68</div>
-            <div class="text-xs text-slate-400">Orthogonality Concept</div>
+            <div class="text-xs text-slate-400">Orthogonal Language</div>
           </div>
           <div id="node-simula67" onclick="openDetails('simula67')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">SIMULA 67</div>
-            <div class="text-xs text-slate-400">Classes & Objects</div>
+            <div class="text-xs text-slate-400">Simulation / OOP Ancestor</div>
           </div>
           <div id="node-pascal" onclick="openDetails('pascal')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">Pascal</div>
-            <div class="text-xs text-slate-400">Teaching Structured Prog.</div>
+            <div class="text-xs text-slate-400">Structured Teaching</div>
           </div>
           <div id="node-ada" onclick="openDetails('ada')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-emerald-500/30 cursor-pointer transition">
             <div class="font-bold text-emerald-300">Ada</div>
-            <div class="text-xs text-slate-400">DoD Effort / Packages</div>
+            <div class="text-xs text-slate-400">Large Design / DoD</div>
           </div>
         </div>
 
@@ -113,15 +113,15 @@
           </div>
           <div id="node-go" onclick="openDetails('go')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
             <div class="font-bold text-blue-300">Go</div>
-            <div class="text-xs text-slate-400">Loosely based on C</div>
+            <div class="text-xs text-slate-400">System / Concurrent</div>
           </div>
           <div id="node-java" onclick="openDetails('java')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
             <div class="font-bold text-blue-300">Java</div>
-            <div class="text-xs text-slate-400">Simplified C++ / JVM</div>
+            <div class="text-xs text-slate-400">Pure OOP / JVM</div>
           </div>
           <div id="node-csharp" onclick="openDetails('csharp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-blue-500/30 cursor-pointer transition">
             <div class="font-bold text-blue-300">C#</div>
-            <div class="text-xs text-slate-400">Based on C++ & Java</div>
+            <div class="text-xs text-slate-400">Component Software (.NET)</div>
           </div>
         </div>
 
@@ -130,15 +130,15 @@
           <h2 class="text-sm font-bold text-purple-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">OOP & Business</h2>
           <div id="node-flowmatic" onclick="openDetails('flowmatic')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
             <div class="font-bold text-purple-300">FLOW-MATIC</div>
-            <div class="text-xs text-slate-400">Primary COBOL Ancestor</div>
+            <div class="text-xs text-slate-400">Business / Early High Level</div>
           </div>
           <div id="node-cobol" onclick="openDetails('cobol')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
             <div class="font-bold text-purple-300">COBOL</div>
-            <div class="text-xs text-slate-400">Business Applications</div>
+            <div class="text-xs text-slate-400">Commercial Applications</div>
           </div>
           <div id="node-smalltalk" onclick="openDetails('smalltalk')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition mt-8">
             <div class="font-bold text-purple-300">Smalltalk</div>
-            <div class="text-xs text-slate-400">First Full Pure OOP</div>
+            <div class="text-xs text-slate-400">Pure Object-Oriented</div>
           </div>
           <div id="node-delphi" onclick="openDetails('delphi')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-purple-500/30 cursor-pointer transition">
             <div class="font-bold text-purple-300">Delphi</div>
@@ -151,23 +151,23 @@
           <h2 class="text-sm font-bold text-rose-400 uppercase tracking-wider text-center border-b border-slate-800 pb-2">Scripting</h2>
           <div id="node-perl" onclick="openDetails('perl')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">Perl</div>
-            <div class="text-xs text-slate-400">CGI / Sys Admin</div>
+            <div class="text-xs text-slate-400">CGI / System Admin</div>
           </div>
           <div id="node-python" onclick="openDetails('python')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">Python</div>
-            <div class="text-xs text-slate-400">Independent OO Scripting</div>
+            <div class="text-xs text-slate-400">OO Scripting</div>
           </div>
           <div id="node-ruby" onclick="openDetails('ruby')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">Ruby</div>
-            <div class="text-xs text-slate-400">Replaces Perl & Python</div>
+            <div class="text-xs text-slate-400">Pure OO Scripting</div>
           </div>
           <div id="node-javascript" onclick="openDetails('javascript')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">JavaScript</div>
-            <div class="text-xs text-slate-400">Client-Side HTML Scripting</div>
+            <div class="text-xs text-slate-400">Client-Side Web Scripting</div>
           </div>
           <div id="node-php" onclick="openDetails('php')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">PHP</div>
-            <div class="text-xs text-slate-400">Server-Side HTML Scripting</div>
+            <div class="text-xs text-slate-400">Server-Side Web Scripting</div>
           </div>
           <div id="node-lua" onclick="openDetails('lua')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-rose-500/30 cursor-pointer transition">
             <div class="font-bold text-rose-300">Lua</div>
@@ -188,11 +188,11 @@
           </div>
           <div id="node-xslt" onclick="openDetails('xslt')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition mt-12">
             <div class="font-bold text-cyan-300">XSLT</div>
-            <div class="text-xs text-slate-400">Markup Hybrid (XML)</div>
+            <div class="text-xs text-slate-400">Markup / Programming Hybrid</div>
           </div>
           <div id="node-jsp" onclick="openDetails('jsp')" class="lang-node bg-slate-800 hover:bg-slate-700 p-3 rounded-lg border border-cyan-500/30 cursor-pointer transition">
             <div class="font-bold text-cyan-300">JSP</div>
-            <div class="text-xs text-slate-400">Markup Hybrid (Java Pages)</div>
+            <div class="text-xs text-slate-400">Markup / Programming Hybrid</div>
           </div>
         </div>
 
@@ -204,7 +204,8 @@
   <div id="detailPanel" class="fixed inset-y-0 right-0 w-[450px] bg-slate-950 border-l border-slate-800 shadow-2xl transform translate-x-full transition-transform duration-300 z-50 p-6 overflow-auto">
     <button onclick="closeDetails()" class="text-slate-400 hover:text-white float-right text-xl font-bold">&times;</button>
     <div id="panelContent">
-      <h3 id="panelTitle" class="text-2xl font-bold text-indigo-400 mb-2">Language Title</h3>
+      <h3 id="panelTitle" class="text-2xl font-bold text-indigo-400 mb-1">Language Title</h3>
+      <div id="panelCategory" class="inline-block bg-indigo-950 text-indigo-300 text-xs px-2.5 py-1 rounded-md border border-indigo-700/50 mb-3 font-semibold">Category</div>
       <div id="panelAncestors" class="text-xs text-indigo-300/80 mb-4">Ancestors: None</div>
       <hr class="border-slate-800 my-4">
       <div id="panelBody" class="space-y-4 text-sm text-slate-300">
@@ -214,13 +215,14 @@
   </div>
 
   <script>
-    // Strict Slide Information Database
+    // Database with categories and slide details
     const langDb = {
       fortran: {
         title: "FORTRAN",
-        ancestors: "Designed from scratch for IBM 704",
+        category: "Scientific & Numerical Programming Language",
+        ancestors: "Designed for IBM 704 hardware",
         details: `
-          <p><strong>Environment:</strong> IBM 704 hardware (index registers & floating point). Computers were small and unreliable; primary focus was machine efficiency.</p>
+          <p><strong>Environment:</strong> IBM 704 hardware. Computers were small and unreliable; primary focus was machine efficiency.</p>
           <p><strong>Design Constraints:</strong> No dynamic storage, primitive I/O, no string handling or decimal arithmetic.</p>
           <p><strong>Key Features:</strong> Post-test counting loop (DO), Formatted I/O, User-defined subprograms, Arithmetic IF statement.</p>
           <p><strong>Evaluation:</strong> Dramatically changed computer usage forever. Highly optimizing compilers.</p>
@@ -228,6 +230,7 @@
       },
       basic: {
         title: "BASIC",
+        category: "Educational / Timesharing Language",
         ancestors: "FORTRAN, ALGOL 60",
         details: `
           <p><strong>Creators:</strong> Kemeny & Kurtz at Dartmouth University.</p>
@@ -238,6 +241,7 @@
       algol58: {
         title: "ALGOL 58",
         ancestors: "FORTRAN ideas",
+        category: "Imperative Programming Language",
         details: `
           <p><strong>Contributions:</strong> Concept of type formalized, names of any length, bracketed subscripts, compound statements (begin...end), semicolon separator, assignment operator (:=).</p>
           <p><strong>Implementation:</strong> Not meant to be implemented directly, but variations were built (MAD, JOVIAL).</p>
@@ -245,6 +249,7 @@
       },
       algol60: {
         title: "ALGOL 60",
+        category: "General-Purpose Imperative Language",
         ancestors: "ALGOL 58",
         details: `
           <p><strong>Overview:</strong> Modified ALGOL 58 at 6-day meeting in Paris.</p>
@@ -254,6 +259,7 @@
       },
       algol68: {
         title: "ALGOL 68",
+        category: "Orthogonal Imperative Language",
         ancestors: "Continued development of ALGOL 60",
         details: `
           <p><strong>Core Concept:</strong> Orthogonality.</p>
@@ -263,6 +269,7 @@
       },
       simula67: {
         title: "SIMULA 67",
+        category: "System Simulation & Early OOP Language",
         ancestors: "ALGOL 60, SIMULA I",
         details: `
           <p><strong>Creators:</strong> Nygaard and Dahl in Norway for system simulation.</p>
@@ -271,6 +278,7 @@
       },
       pascal: {
         title: "Pascal",
+        category: "Structured Teaching Language",
         ancestors: "ALGOL 68",
         details: `
           <p><strong>Creator:</strong> Niklaus Wirth (former ALGOL 68 committee member).</p>
@@ -280,6 +288,7 @@
       },
       ada: {
         title: "Ada",
+        category: "Large-Scale Concurrent / Systems Language",
         ancestors: "ALGOL 68",
         details: `
           <p><strong>Background:</strong> History's largest design effort (DoD). Named after Augusta Ada Byron.</p>
@@ -289,6 +298,7 @@
       },
       c: {
         title: "C",
+        category: "Systems Programming Language",
         ancestors: "BCPL, B, ALGOL 68",
         details: `
           <p><strong>Creator:</strong> Dennis Ritchie at Bell Labs for systems programming.</p>
@@ -297,6 +307,7 @@
       },
       cpp: {
         title: "C++",
+        category: "Hybrid Imperative & Object-Oriented Language",
         ancestors: "C, SIMULA 67",
         details: `
           <p><strong>Creator:</strong> Bjarne Stroustrup at Bell Labs.</p>
@@ -305,6 +316,7 @@
       },
       objc: {
         title: "Objective-C",
+        category: "Object-Oriented Systems Language",
         ancestors: "C, Smalltalk",
         details: `
           <p><strong>Overview:</strong> C plus support for OOP based on Smalltalk. Uses Smalltalk's method calling syntax.</p>
@@ -313,6 +325,7 @@
       },
       go: {
         title: "Go",
+        category: "Concurrent Systems Language",
         ancestors: "Loosely based on C",
         details: `
           <p><strong>Creator:</strong> Designed at Google (2009).</p>
@@ -321,6 +334,7 @@
       },
       java: {
         title: "Java",
+        category: "Object-Oriented Web & Application Language",
         ancestors: "C++",
         details: `
           <p><strong>Creator:</strong> Sun Microsystems (James Gosling).</p>
@@ -329,6 +343,7 @@
       },
       csharp: {
         title: "C#",
+        category: "Component-Based Software Development Language",
         ancestors: "C++, Java",
         details: `
           <p><strong>Platform:</strong> Core component of Microsoft .NET platform.</p>
@@ -337,6 +352,7 @@
       },
       flowmatic: {
         title: "FLOW-MATIC",
+        category: "Early Business Programming Language",
         ancestors: "Univac / Grace Hopper",
         details: `
           <p><strong>Features:</strong> Primary historical basis for COBOL. Names under constraints, English words for operators, separate code and data, verbs as first word of statements.</p>
@@ -344,6 +360,7 @@
       },
       cobol: {
         title: "COBOL",
+        category: "Commercial & Business Applications Language",
         ancestors: "FLOW-MATIC",
         details: `
           <p><strong>Created By:</strong> CODASYL Committee (DoD influence).</p>
@@ -353,6 +370,7 @@
       },
       smalltalk: {
         title: "Smalltalk",
+        category: "Pure Object-Oriented Language",
         ancestors: "Simula 67 ideas",
         details: `
           <p><strong>Creators:</strong> Alan Kay, Adele Goldberg at Xerox PARC.</p>
@@ -361,6 +379,7 @@
       },
       delphi: {
         title: "Delphi",
+        category: "Object-Oriented Visual Language",
         ancestors: "Pascal",
         details: `
           <p><strong>Overview:</strong> Borland Delphi. Pascal plus features to support OOP. More elegant and safer than C++.</p>
@@ -368,6 +387,7 @@
       },
       perl: {
         title: "Perl",
+        category: "Web CGI & System Administration Scripting Language",
         ancestors: "sh, awk, C",
         details: `
           <p><strong>Creator:</strong> Larry Wall.</p>
@@ -376,6 +396,7 @@
       },
       python: {
         title: "Python",
+        category: "Object-Oriented Interpreted Scripting Language",
         ancestors: "Independent OO Scripting Language",
         details: `
           <p><strong>Overview:</strong> Interpreted OO scripting/programming language.</p>
@@ -384,7 +405,8 @@
       },
       ruby: {
         title: "Ruby",
-        ancestors: "Began as a replacement for Perl & Python",
+        category: "Pure Object-Oriented Scripting Language",
+        ancestors: "Perl & Python",
         details: `
           <p><strong>Creator:</strong> Yukihiro Matsumoto ("Matz") in Japan.</p>
           <p><strong>Features:</strong> Pure object-oriented scripting language (all data are objects). Operators are redefinable methods.</p>
@@ -392,6 +414,7 @@
       },
       javascript: {
         title: "JavaScript",
+        category: "Client-Side Dynamic HTML Scripting Language",
         ancestors: "Netscape / Sun",
         details: `
           <p><strong>Overview:</strong> Client-side HTML-embedded scripting language for dynamic HTML documents.</p>
@@ -400,6 +423,7 @@
       },
       php: {
         title: "PHP",
+        category: "Server-Side HTML-Embedded Scripting Language",
         ancestors: "Web Scripting",
         details: `
           <p><strong>Overview:</strong> Hypertext Preprocessor. Server-side HTML-embedded scripting language.</p>
@@ -408,6 +432,7 @@
       },
       lua: {
         title: "Lua",
+        category: "Extensible Object-Oriented Scripting Language",
         ancestors: "Web Scripting",
         details: `
           <p><strong>Features:</strong> Interpreted OO scripting language. Single data structure: table (supports lists, tuples, hashes). Highly extensible.</p>
@@ -415,6 +440,7 @@
       },
       lisp: {
         title: "LISP",
+        category: "Functional Programming Language",
         ancestors: "MIT / John McCarthy",
         details: `
           <p><strong>Purpose:</strong> First functional programming language designed for AI list processing.</p>
@@ -423,6 +449,7 @@
       },
       prolog: {
         title: "Prolog",
+        category: "Logic Programming Language",
         ancestors: "Formal Logic",
         details: `
           <p><strong>Creators:</strong> Colmerauer, Roussel (Marseille) & Kowalski (Edinburgh).</p>
@@ -431,6 +458,7 @@
       },
       xslt: {
         title: "XSLT",
+        category: "Markup / Programming Hybrid Language",
         ancestors: "XML / Hybrid",
         details: `
           <p><strong>Overview:</strong> Extensible Stylesheet Language Transformation. Transforms XML documents for display.</p>
@@ -439,6 +467,7 @@
       },
       jsp: {
         title: "JSP",
+        category: "Markup / Programming Hybrid Language",
         ancestors: "Java / HTML Hybrid",
         details: `
           <p><strong>Overview:</strong> Java Server Pages. Collection of technologies to support dynamic Web documents.</p>
@@ -476,7 +505,6 @@
       const svg = document.getElementById('svgCanvas');
       const container = document.getElementById('graphContainer').getBoundingClientRect();
       
-      // Clear existing lines
       svg.innerHTML = `
         <defs>
           <marker id="arrow" viewBox="0 0 10 10" refX="6" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
@@ -518,6 +546,7 @@
       if (!data) return;
       
       document.getElementById('panelTitle').innerText = data.title;
+      document.getElementById('panelCategory').innerText = data.category;
       document.getElementById('panelAncestors').innerText = "Ancestors: " + data.ancestors;
       document.getElementById('panelBody').innerHTML = data.details;
       document.getElementById('detailPanel').classList.remove('translate-x-full');
