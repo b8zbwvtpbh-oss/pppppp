@@ -41,11 +41,11 @@
             background: rgba(30, 41, 59, 0.6);
             backdrop-filter: blur(8px);
             border: 1px solid rgba(255, 255, 255, 0.08);
-            transition: all 0.25s cubic-bezier(0.4, 0, 0.2, 1);
+            transition: all 0.2s cubic-bezier(0.4, 0, 0.2, 1);
         }
         .glass-card:hover {
             transform: translateY(-2px);
-            box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.5), 0 0 15px rgba(59, 130, 246, 0.3);
+            box-shadow: 0 8px 20px -4px rgba(0, 0, 0, 0.5), 0 0 12px rgba(59, 130, 246, 0.3);
             border-color: rgba(255, 255, 255, 0.25);
         }
         ::-webkit-scrollbar {
@@ -125,14 +125,15 @@
         </div>
     </header>
 
-    <!-- Category Filter Bar (4 Main Paradigms Only) -->
-    <div class="glass-panel z-10 px-6 py-2.5 flex items-center gap-2 overflow-x-auto border-b border-slate-800/80 text-xs">
-        <span class="text-slate-400 font-medium uppercase tracking-wider mr-2 text-[10px]">Main Paradigms:</span>
+    <!-- Category Filter Bar -->
+    <div class="glass-panel z-10 px-6 py-2 flex items-center gap-2 overflow-x-auto border-b border-slate-800/80 text-xs">
+        <span class="text-slate-400 font-medium uppercase tracking-wider mr-2 text-[10px]">Filter Views:</span>
         <button class="filter-btn active px-3 py-1 rounded-full bg-blue-600 text-white font-medium transition" data-category="ALL">All Paradigms</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="IMPERATIVE">Imperative</button>
+        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="IMPERATIVE_1">Imperative (Early & Systems)</button>
+        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="IMPERATIVE_2">Imperative (OOP & Scripting)</button>
         <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="FUNCTIONAL">Functional</button>
         <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="LOGIC">Logic</button>
-        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="MARKUP">Markup Programming Hybrid</button>
+        <button class="filter-btn px-3 py-1 rounded-full bg-slate-800 text-slate-300 hover:bg-slate-700 border border-slate-700/60 font-medium transition" data-category="MARKUP">Markup programming hybrid</button>
     </div>
 
     <!-- Main Workspace -->
@@ -156,17 +157,17 @@
         </div>
 
         <div id="graphContainer" class="absolute inset-0 origin-top-left transition-transform duration-75">
-            <svg id="svgCanvas" class="absolute inset-0 w-[3200px] h-[2600px] pointer-events-none z-0"></svg>
-            <div id="columnsWrapper" class="absolute top-10 left-10 flex gap-16 items-start z-10 pb-32"></div>
+            <svg id="svgCanvas" class="absolute inset-0 w-[3600px] h-[1800px] pointer-events-none z-0"></svg>
+            <div id="columnsWrapper" class="absolute top-6 left-6 flex gap-10 items-start z-10 pb-20"></div>
         </div>
     </main>
 
     <!-- Detail Drawer Panel -->
-    <aside id="detailDrawer" class="fixed top-0 right-0 h-full w-[480px] max-w-full glass-panel z-30 shadow-2xl border-l border-slate-700/80 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
-        <div class="p-6 border-b border-slate-800 flex items-start justify-between bg-slate-900/60">
+    <aside id="detailDrawer" class="fixed top-0 right-0 h-full w-[460px] max-w-full glass-panel z-30 shadow-2xl border-l border-slate-700/80 transform translate-x-full transition-transform duration-300 ease-in-out flex flex-col">
+        <div class="p-5 border-b border-slate-800 flex items-start justify-between bg-slate-900/60">
             <div>
-                <span id="drawerCategory" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30 mb-1 inline-block">Category</span>
-                <span id="drawerSubCategory" class="px-2.5 py-0.5 rounded-full text-[11px] font-semibold tracking-wider uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30 mb-2 inline-block ml-1">Subcategory</span>
+                <span id="drawerCategory" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-blue-500/20 text-blue-400 border border-blue-500/30 mb-1 inline-block">Category</span>
+                <span id="drawerSubCategory" class="px-2.5 py-0.5 rounded-full text-[10px] font-semibold tracking-wider uppercase bg-amber-500/20 text-amber-400 border border-amber-500/30 mb-2 inline-block ml-1">Subcategory</span>
                 <h2 id="drawerTitle" class="text-2xl font-extrabold text-white">Language Name</h2>
                 <p id="drawerMeta" class="text-xs text-slate-400 mt-1">Creator • Design Environment</p>
             </div>
@@ -175,12 +176,12 @@
             </button>
         </div>
 
-        <div class="flex-1 overflow-y-auto p-6 space-y-6 text-sm text-slate-300">
-            <section class="bg-slate-900/40 p-4 rounded-xl border border-slate-800">
+        <div class="flex-1 overflow-y-auto p-5 space-y-5 text-sm text-slate-300">
+            <section class="bg-slate-900/40 p-3.5 rounded-xl border border-slate-800">
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-clock-rotate-left text-blue-400"></i> Background & Context
                 </h3>
-                <div class="grid grid-cols-2 gap-3 text-xs">
+                <div class="grid grid-cols-2 gap-2.5 text-xs">
                     <div><span class="text-slate-500 block">Creator(s):</span> <span id="drawerCreator" class="text-slate-200 font-medium"></span></div>
                     <div><span class="text-slate-500 block">Target Field:</span> <span id="drawerTarget" class="text-slate-200 font-medium"></span></div>
                     <div class="col-span-2"><span class="text-slate-500 block">Design Environment:</span> <span id="drawerEnv" class="text-slate-200 font-medium"></span></div>
@@ -192,11 +193,11 @@
                     <i class="fa-solid fa-diagram-project text-purple-400"></i> Lineage Connections
                 </h3>
                 <div class="grid grid-cols-2 gap-2 text-xs">
-                    <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+                    <div class="p-2.5 bg-slate-900/60 rounded-lg border border-slate-800">
                         <span class="text-slate-500 block mb-1">Direct Ancestors:</span>
                         <div id="drawerParents" class="flex flex-wrap gap-1"></div>
                     </div>
-                    <div class="p-3 bg-slate-900/60 rounded-lg border border-slate-800">
+                    <div class="p-2.5 bg-slate-900/60 rounded-lg border border-slate-800">
                         <span class="text-slate-500 block mb-1">Direct Descendants:</span>
                         <div id="drawerChildren" class="flex flex-wrap gap-1"></div>
                     </div>
@@ -207,14 +208,14 @@
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-microchip text-emerald-400"></i> Key Design Features
                 </h3>
-                <ul id="drawerFeatures" class="list-disc list-inside space-y-1.5 text-slate-300 text-xs bg-slate-900/40 p-4 rounded-xl border border-slate-800/80"></ul>
+                <ul id="drawerFeatures" class="list-disc list-inside space-y-1 text-slate-300 text-xs bg-slate-900/40 p-3.5 rounded-xl border border-slate-800/80"></ul>
             </section>
 
             <section>
                 <h3 class="text-xs font-bold text-slate-400 uppercase tracking-wider mb-2 flex items-center gap-2">
                     <i class="fa-solid fa-lightbulb text-amber-400"></i> Contributions & Innovations
                 </h3>
-                <ul id="drawerInnovations" class="list-disc list-inside space-y-1.5 text-slate-300 text-xs bg-slate-900/40 p-4 rounded-xl border border-slate-800/80"></ul>
+                <ul id="drawerInnovations" class="list-disc list-inside space-y-1 text-slate-300 text-xs bg-slate-900/40 p-3.5 rounded-xl border border-slate-800/80"></ul>
             </section>
 
             <section>
@@ -222,11 +223,11 @@
                     <i class="fa-solid fa-scale-balanced text-rose-400"></i> Language Evaluation
                 </h3>
                 <div class="space-y-2 text-xs">
-                    <div class="bg-emerald-950/20 border border-emerald-800/40 p-3 rounded-lg">
+                    <div class="bg-emerald-950/20 border border-emerald-800/40 p-2.5 rounded-lg">
                         <span class="font-bold text-emerald-400 block mb-1"><i class="fa-solid fa-check mr-1"></i> Successes & Impact:</span>
                         <p id="drawerSuccesses" class="text-slate-300 leading-relaxed"></p>
                     </div>
-                    <div class="bg-rose-950/20 border border-rose-800/40 p-3 rounded-lg">
+                    <div class="bg-rose-950/20 border border-rose-800/40 p-2.5 rounded-lg">
                         <span class="font-bold text-rose-400 block mb-1"><i class="fa-solid fa-xmark mr-1"></i> Weaknesses & Limitations:</span>
                         <p id="drawerWeaknesses" class="text-slate-300 leading-relaxed"></p>
                     </div>
@@ -236,243 +237,244 @@
     </aside>
 
     <script>
-        // Data structure categorized under 4 MAIN PARADIGMS with detailed Subcategories/Features
         const languageData = [
-            // ---------------- 1. IMPERATIVE PARADIGM ----------------
+            // --- IMPERATIVE COLUMN 1: Early & Classic Systems ---
             {
-                id: 'fortran_0', name: 'FORTRAN 0', category: 'IMPERATIVE', subCategory: 'Scientific / Early Imperative', creator: 'John Backus & IBM Team', target: 'Scientific & Numerical Computing', environment: 'IBM 704 Computer', parents: [], children: ['fortran_1'],
-                features: ['Designed in 1954 for IBM 704', 'First high-level plan for index registers and hardware floating-point'],
+                id: 'fortran_0', name: 'FORTRAN 0', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Scientific / Early Imperative', creator: 'John Backus & IBM Team', target: 'Scientific & Numerical Computing', environment: 'IBM 704 Computer', parents: [], children: ['fortran_1'],
+                features: ['Execution Model: Compilation', 'Designed in 1954 for IBM 704', 'First high-level plan for index registers and hardware floating-point'],
                 innovations: ['Proved machine code efficiency could be reached with higher-level syntax'],
                 successes: 'Laid foundation for compiler design and imperative languages.', weaknesses: 'No user-defined subroutines.'
             },
             {
-                id: 'fortran_1', name: 'FORTRAN I', category: 'IMPERATIVE', subCategory: 'Scientific / Early Imperative', creator: 'John Backus (IBM)', target: 'Scientific Application', environment: 'IBM 704', parents: ['fortran_0'], children: ['fortran_2', 'algol_58'],
-                features: ['First implemented FORTRAN version (1957)', 'Names up to 6 characters', 'Formatted I/O and Arithmetic IF'],
+                id: 'fortran_1', name: 'FORTRAN I', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Scientific / Early Imperative', creator: 'John Backus (IBM)', target: 'Scientific Application', environment: 'IBM 704', parents: ['fortran_0'], children: ['fortran_2', 'algol_58'],
+                features: ['Execution Model: Compilation', 'First implemented FORTRAN version (1957)', 'Names up to 6 characters', 'Formatted I/O and Arithmetic IF'],
                 innovations: ['Three-way Arithmetic IF statement'],
                 successes: 'Dramatically increased programmer productivity.', weaknesses: 'Rigid fixed-format layout.'
             },
             {
-                id: 'fortran_2', name: 'FORTRAN II', category: 'IMPERATIVE', subCategory: 'Scientific / Modular Imperative', creator: 'IBM', target: 'Scientific Computing', environment: 'IBM Systems', parents: ['fortran_1'], children: ['fortran_4'],
-                features: ['Independent compilation of subroutines', 'Bug fixes from Fortran I'],
+                id: 'fortran_2', name: 'FORTRAN II', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Scientific / Modular Imperative', creator: 'IBM', target: 'Scientific Computing', environment: 'IBM Systems', parents: ['fortran_1'], children: ['fortran_4'],
+                features: ['Execution Model: Compilation', 'Independent compilation of subroutines', 'Bug fixes from Fortran I'],
                 innovations: ['Independent compilation without recompiling main program'],
                 successes: 'Made large software programs practical.', weaknesses: 'Parameter checking across files missing.'
             },
             {
-                id: 'fortran_4', name: 'FORTRAN IV / 77', category: 'IMPERATIVE', subCategory: 'Scientific / Standardized Imperative', creator: 'ANSI Standard Board', target: 'Scientific / Engineering', environment: 'Mainframes', parents: ['fortran_2'], children: ['fortran_90'],
-                features: ['Explicit type declarations', 'Logical IF statement', 'Character strings in Fortran 77'],
+                id: 'fortran_4', name: 'FORTRAN IV / 77', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Scientific / Standardized Imperative', creator: 'ANSI Standard Board', target: 'Scientific / Engineering', environment: 'Mainframes', parents: ['fortran_2'], children: ['fortran_90'],
+                features: ['Execution Model: Compilation', 'Explicit type declarations', 'Logical IF statement', 'Character strings in Fortran 77'],
                 innovations: ['ANSI Standardization'],
                 successes: 'Dominant scientific language for decades.', weaknesses: 'Lack of pointers and structured types.'
             },
             {
-                id: 'fortran_90', name: 'FORTRAN 90 / Modern', category: 'IMPERATIVE', subCategory: 'Array Processing / Structured Imperative', creator: 'ISO/ANSI Committee', target: 'High Performance Computing', environment: 'Supercomputers', parents: ['fortran_4'], children: ['fortran_modern'],
-                features: ['Dynamic memory allocation', 'Array operations and slicing', 'Modules and recursion'],
+                id: 'fortran_90', name: 'FORTRAN 90 / Modern', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Array Processing / Structured', creator: 'ISO/ANSI Committee', target: 'High Performance Computing', environment: 'Supercomputers', parents: ['fortran_4'], children: ['fortran_modern'],
+                features: ['Execution Model: Compilation', 'Dynamic memory allocation', 'Array operations and slicing', 'Modules and recursion'],
                 innovations: ['Native array syntax'],
                 successes: 'Modernized FORTRAN.', weaknesses: 'Backward compatibility burdens.'
             },
             {
-                id: 'fortran_modern', name: 'FORTRAN 2003 / 2008', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Parallel Imperative', creator: 'ISO Committee', target: 'Parallel Supercomputing', environment: 'HPC Clusters', parents: ['fortran_90'], children: [],
-                features: ['Object-Oriented Programming (OOP) support', 'C Interoperability', 'Co-arrays for parallel computing'],
+                id: 'fortran_modern', name: 'FORTRAN 2003 / 2008', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Parallel', creator: 'ISO Committee', target: 'Parallel Supercomputing', environment: 'HPC Clusters', parents: ['fortran_90'], children: [],
+                features: ['Execution Model: Compilation', 'Object-Oriented Programming (OOP) support', 'C Interoperability', 'Co-arrays for parallel computing'],
                 innovations: ['Co-array parallel execution syntax'],
                 successes: 'Top choice for supercomputing.', weaknesses: 'Niche academic/scientific usage.'
             },
             {
-                id: 'algol_58', name: 'ALGOL 58', category: 'IMPERATIVE', subCategory: 'Algorithmic Imperative', creator: 'ACM & GAMM Committee', target: 'Universal Algorithm Specification', environment: 'Machine-Independent', parents: ['fortran_1'], children: ['algol_60'],
-                features: ['Formalized data types', 'Compound statements (begin...end)'],
+                id: 'algol_58', name: 'ALGOL 58', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Algorithmic Imperative', creator: 'ACM & GAMM Committee', target: 'Universal Algorithm Specification', environment: 'Machine-Independent', parents: ['fortran_1'], children: ['algol_60'],
+                features: ['Execution Model: Compilation', 'Formalized data types', 'Compound statements (begin...end)'],
                 innovations: ['First machine-independent algorithmic language design'],
                 successes: 'Triggered global language standardization.', weaknesses: 'Never widely implemented.'
             },
             {
-                id: 'algol_60', name: 'ALGOL 60', category: 'IMPERATIVE', subCategory: 'Block-Structured Imperative', creator: 'International Committee', target: 'Algorithmic Publication', environment: 'Machine-Independent', parents: ['algol_58'], children: ['algol_68', 'pascal', 'simula_67', 'bcpl_b'],
-                features: ['Block structure and local scope', 'Subprogram recursion', 'Pass-by-value and Pass-by-name'],
+                id: 'algol_60', name: 'ALGOL 60', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Block-Structured Imperative', creator: 'International Committee', target: 'Algorithmic Publication', environment: 'Machine-Independent', parents: ['algol_58'], children: ['algol_68', 'simula_67'],
+                features: ['Execution Model: Compilation', 'Block structure and local scope', 'Subprogram recursion', 'Pass-by-value and Pass-by-name'],
                 innovations: ['Backus-Naur Form (BNF) syntax definition'],
                 successes: 'Standard format for publishing algorithms for 30 years.', weaknesses: 'No standard I/O library.'
             },
             {
-                id: 'algol_68', name: 'ALGOL 68', category: 'IMPERATIVE', subCategory: 'Orthogonal Imperative', creator: 'IFIP Working Group 2.1', target: 'General Purpose', environment: 'Theoretical Computer Science', parents: ['algol_60'], children: [],
-                features: ['Orthogonality concept', 'User-defined data structures', 'Dynamic arrays'],
+                id: 'algol_68', name: 'ALGOL 68', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Orthogonal Imperative', creator: 'IFIP Working Group 2.1', target: 'General Purpose', environment: 'Theoretical Computer Science', parents: ['algol_60'], children: ['pascal', 'c_lang', 'ada'],
+                features: ['Execution Model: Compilation', 'Orthogonality concept', 'User-defined data structures', 'Dynamic arrays'],
                 innovations: ['Rigorous orthogonality design'],
-                successes: 'Profound theoretical impact on Pascal and C.', weaknesses: 'Extremely difficult to learn.'
+                successes: 'Profound theoretical impact on Pascal, C, and Ada.', weaknesses: 'Extremely difficult to learn.'
             },
             {
-                id: 'bcpl_b', name: 'BCPL & B', category: 'IMPERATIVE', subCategory: 'Systems / Typeless Imperative', creator: 'Richards / Thompson', target: 'Systems Programming', environment: 'DEC PDP', parents: ['algol_60'], children: ['c_lang'],
-                features: ['Typeless languages (word-based data)', 'Simple compact compiler'],
-                innovations: ['Simplified high-level system programming'],
-                successes: 'Led directly to C.', weaknesses: 'Typeless safety issues.'
-            },
-            {
-                id: 'c_lang', name: 'C Language', category: 'IMPERATIVE', subCategory: 'Systems / Structured Imperative', creator: 'Dennis Ritchie', target: 'Systems & OS Development', environment: 'UNIX System', parents: ['bcpl_b'], children: ['cpp', 'objective_c'],
-                features: ['Rich operator set', 'Low-level pointer access', 'Compact syntax'],
-                innovations: ['Writing an entire Operating System (UNIX) in high-level language'],
-                successes: 'Most influential systems language in history.', weaknesses: 'Poor type checking.'
-            },
-            {
-                id: 'simula_67', name: 'SIMULA 67', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Simulation', creator: 'Dahl & Nygaard', target: 'System Simulation', environment: 'Norwegian Computing Center', parents: ['algol_60'], children: ['smalltalk', 'cpp'],
-                features: ['Classes and Objects', 'Inheritance', 'Co-routines for simulation'],
-                innovations: ['Invented Classes, Objects, and Inheritance'],
-                successes: 'Laid foundation for all Object-Oriented Programming.', weaknesses: 'Niche simulation adoption.'
-            },
-            {
-                id: 'cpp', name: 'C++', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Systems Hybrid', creator: 'Bjarne Stroustrup', target: 'Systems & Abstraction', environment: 'Bell Labs', parents: ['c_lang', 'simula_67'], children: ['java', 'csharp'],
-                features: ['Combines C speed with Simula 67 classes', 'Multiple inheritance, templates'],
-                innovations: ['Hybrid procedural and Object-Oriented system language'],
-                successes: 'Dominant for systems, graphics, and games.', weaknesses: 'High complexity.'
-            },
-            {
-                id: 'objective_c', name: 'Objective-C', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Dynamic', creator: 'Brad Cox & Tom Love', target: 'Apple Systems & OS', environment: 'NeXT / Apple', parents: ['c_lang'], children: [],
-                features: ['C language plus Smalltalk dynamic messaging syntax'],
-                innovations: ['Smalltalk OOP model grafted onto C'],
-                successes: 'Core language for iOS and macOS systems.', weaknesses: 'Verbose syntax.'
-            },
-            {
-                id: 'pascal', name: 'Pascal', category: 'IMPERATIVE', subCategory: 'Academic / Structured Imperative', creator: 'Niklaus Wirth', target: 'Teaching Structured Programming', environment: 'Academia', parents: ['algol_60'], children: ['ada', 'delphi'],
-                features: ['Small, simple, structured design', 'Enumeration and subrange types'],
+                id: 'pascal', name: 'Pascal', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Academic / Structured', creator: 'Niklaus Wirth', target: 'Teaching Structured Programming', environment: 'Academia', parents: ['algol_68'], children: ['delphi'],
+                features: ['Execution Model: Compilation', 'Small, simple, structured design', 'Enumeration and subrange types'],
                 innovations: ['Ideal educational language for structured programming'],
                 successes: 'Dominant college teaching language for 2 decades.', weaknesses: 'Lack of modularity for large systems.'
             },
             {
-                id: 'delphi', name: 'Delphi', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / RAD', creator: 'Borland', target: 'Rapid Application Development', environment: 'Windows IDE', parents: ['pascal'], children: [],
-                features: ['Object-oriented extension of Pascal', 'Visual Component Library (VCL)'],
-                innovations: ['Visual drag-and-drop form application development'],
-                successes: 'Extremely fast desktop prototyping.', weaknesses: 'Tied mainly to Windows.'
+                id: 'bcpl_b', name: 'BCPL & B', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Systems / Typeless', creator: 'Richards / Thompson', target: 'Systems Programming', environment: 'DEC PDP', parents: ['algol_60'], children: ['c_lang'],
+                features: ['Execution Model: Compilation', 'Typeless languages (word-based data)', 'Simple compact compiler'],
+                innovations: ['Simplified high-level system programming'],
+                successes: 'Led directly to C.', weaknesses: 'Typeless safety issues.'
             },
             {
-                id: 'ada', name: 'Ada & Ada 95', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Concurrent / Real-time', creator: 'Jean Ichbiah (DoD)', target: 'Embedded Defense Systems', environment: 'US Department of Defense', parents: ['pascal'], children: [],
-                features: ['Packages (data abstraction)', 'Exception handling', 'Tasking concurrency', 'Ada 95 added OOP'],
-                innovations: ['Comprehensive design for safety-critical real-time software'],
-                successes: 'High reliability in aerospace and defense.', weaknesses: 'Heavy initial compilers.'
+                id: 'c_lang', name: 'C Language', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Systems / Structured', creator: 'Dennis Ritchie', target: 'Systems & OS Development', environment: 'UNIX System', parents: ['algol_68', 'bcpl_b'], children: ['cpp', 'objective_c', 'go'],
+                features: ['Execution Model: Compilation', 'Rich operator set', 'Low-level pointer access', 'Compact syntax'],
+                innovations: ['Writing an entire Operating System (UNIX) in high-level language'],
+                successes: 'Most influential systems language in history.', weaknesses: 'Poor type checking.'
             },
             {
-                id: 'flow_matic', name: 'FLOW-MATIC', category: 'IMPERATIVE', subCategory: 'Business Imperative', creator: 'Grace Hopper', target: 'Business Data Processing', environment: 'UNIVAC', parents: [], children: ['cobol'],
-                features: ['English-like syntax (READ, WRITE)', 'Data descriptions separate from code'],
+                id: 'flow_matic', name: 'FLOW-MATIC', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Business Imperative', creator: 'Grace Hopper', target: 'Business Data Processing', environment: 'UNIVAC', parents: [], children: ['cobol'],
+                features: ['Execution Model: Compilation', 'English-like syntax (READ, WRITE)', 'Data descriptions separate from code'],
                 innovations: ['First language using English words instead of formulas'],
                 successes: 'Proved business data processing via English.', weaknesses: 'Restricted to UNIVAC.'
             },
             {
-                id: 'cobol', name: 'COBOL', category: 'IMPERATIVE', subCategory: 'Business / Record-Oriented', creator: 'CODASYL & DoD', target: 'Business Applications', environment: 'Mainframes', parents: ['flow_matic'], children: [],
-                features: ['English-like readability', 'Hierarchical record structures', 'Separation into 4 divisions'],
+                id: 'cobol', name: 'COBOL', category: 'IMPERATIVE_1', mainCategory: 'IMPERATIVE', subCategory: 'Business / Record-Oriented', creator: 'CODASYL & DoD', target: 'Business Applications', environment: 'Mainframes', parents: ['flow_matic'], children: [],
+                features: ['Execution Model: Compilation', 'English-like readability', 'Hierarchical record structures', 'Separation into 4 divisions'],
                 innovations: ['Hierarchical data structures'],
                 successes: 'Processed global business data for decades.', weaknesses: 'Verbose syntax.'
             },
+
+            // --- IMPERATIVE COLUMN 2: Modern OOP, Systems & Scripting ---
             {
-                id: 'java', name: 'Java', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Virtual Machine', creator: 'James Gosling (Sun)', target: 'Enterprise & Web Applets', environment: 'JVM', parents: ['cpp'], children: ['csharp'],
-                features: ['Bytecode compiled to JVM', 'Automatic garbage collection', 'No pointers'],
+                id: 'simula_67', name: 'SIMULA 67', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Simulation', creator: 'Dahl & Nygaard', target: 'System Simulation', environment: 'Norwegian Computing Center', parents: ['algol_60'], children: ['smalltalk', 'cpp'],
+                features: ['Execution Model: Compilation', 'Classes and Objects', 'Inheritance', 'Co-routines for simulation'],
+                innovations: ['Invented Classes, Objects, and Inheritance'],
+                successes: 'Laid foundation for all Object-Oriented Programming.', weaknesses: 'Niche simulation adoption.'
+            },
+            {
+                id: 'cpp', name: 'C++', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Systems Hybrid', creator: 'Bjarne Stroustrup', target: 'Systems & Abstraction', environment: 'Bell Labs', parents: ['c_lang', 'simula_67'], children: ['java', 'csharp'],
+                features: ['Execution Model: Compilation', 'Combines C speed with Simula 67 classes', 'Multiple inheritance, templates'],
+                innovations: ['Hybrid procedural and Object-Oriented system language'],
+                successes: 'Dominant for systems, graphics, and games.', weaknesses: 'High complexity.'
+            },
+            {
+                id: 'objective_c', name: 'Objective-C', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Dynamic', creator: 'Brad Cox & Tom Love', target: 'Apple Systems & OS', environment: 'NeXT / Apple', parents: ['c_lang', 'smalltalk'], children: [],
+                features: ['Execution Model: Compilation', 'C language plus Smalltalk dynamic messaging syntax'],
+                innovations: ['Smalltalk OOP model grafted onto C'],
+                successes: 'Core language for iOS and macOS systems.', weaknesses: 'Verbose syntax.'
+            },
+            {
+                id: 'delphi', name: 'Delphi', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / RAD', creator: 'Borland', target: 'Rapid Application Development', environment: 'Windows IDE', parents: ['pascal'], children: [],
+                features: ['Execution Model: Compilation', 'Object-oriented extension of Pascal', 'Visual Component Library (VCL)'],
+                innovations: ['Visual drag-and-drop form application development'],
+                successes: 'Extremely fast desktop prototyping.', weaknesses: 'Tied mainly to Windows.'
+            },
+            {
+                id: 'ada', name: 'Ada & Ada 95', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Real-time', creator: 'Jean Ichbiah (DoD)', target: 'Embedded Defense Systems', environment: 'US Department of Defense', parents: ['algol_68'], children: [],
+                features: ['Execution Model: Compilation', 'Packages (data abstraction)', 'Exception handling', 'Tasking concurrency', 'Ada 95 added OOP'],
+                innovations: ['Comprehensive design for safety-critical real-time software'],
+                successes: 'High reliability in aerospace and defense.', weaknesses: 'Heavy initial compilers.'
+            },
+            {
+                id: 'java', name: 'Java', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Virtual Machine', creator: 'James Gosling (Sun)', target: 'Enterprise & Web Applets', environment: 'JVM', parents: ['cpp'], children: ['csharp'],
+                features: ['Execution Model: Hybrid (Bytecode on JVM with JIT)', 'Automatic garbage collection', 'No pointers'],
                 innovations: ['Write Once, Run Anywhere portability'],
                 successes: 'Dominant enterprise server and Android language.', weaknesses: 'JVM startup overhead.'
             },
             {
-                id: 'csharp', name: 'C#', category: 'IMPERATIVE', subCategory: 'Object-Oriented (OOP) / Component-Based', creator: 'Anders Hejlsberg (Microsoft)', target: 'Enterprise .NET Applications', environment: '.NET Framework', parents: ['cpp', 'java'], children: [],
-                features: ['Common Type System (CTS)', 'Properties, Events, Delegates', 'LINQ queries'],
+                id: 'csharp', name: 'C#', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Object-Oriented / Component-Based', creator: 'Anders Hejlsberg (Microsoft)', target: 'Enterprise .NET Applications', environment: '.NET Framework', parents: ['cpp', 'java'], children: [],
+                features: ['Execution Model: Hybrid (Managed Runtime / IL)', 'Common Type System (CTS)', 'Properties, Events, Delegates'],
                 innovations: ['Component-based engineering on managed runtime'],
                 successes: 'Core language for Windows enterprise and Unity games.', weaknesses: 'Initial Windows lock-in.'
             },
             {
-                id: 'go', name: 'Go', category: 'IMPERATIVE', subCategory: 'Systems / Concurrent Imperative', creator: 'Google', target: 'Cloud & Network Services', environment: 'Google Systems', parents: ['c_lang'], children: [],
-                features: ['Fast compilation', 'Built-in concurrency (goroutines)', 'Garbage collection'],
+                id: 'go', name: 'Go', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Systems / Concurrent', creator: 'Google', target: 'Cloud & Network Services', environment: 'Google Systems', parents: ['c_lang'], children: [],
+                features: ['Execution Model: Compilation', 'Fast native compilation', 'Built-in concurrency (goroutines)', 'Garbage collection'],
                 innovations: ['Simplified concurrency for cloud microservices'],
                 successes: 'Standard for modern cloud infrastructure.', weaknesses: 'No traditional class inheritance.'
             },
             {
-                id: 'basic', name: 'BASIC', category: 'IMPERATIVE', subCategory: 'Scripting / Interactive Imperative', creator: 'Kemeny & Kurtz', target: 'Non-science Students', environment: 'Dartmouth', parents: [], children: [],
-                features: ['Easy to learn and use', 'Time-sharing support'],
+                id: 'basic', name: 'BASIC', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Interactive', creator: 'Kemeny & Kurtz', target: 'Non-science Students', environment: 'Dartmouth', parents: [], children: [],
+                features: ['Execution Model: Interpreter / Compilation', 'Easy to learn and use', 'Time-sharing support'],
                 innovations: ['First widely used time-sharing language'],
                 successes: 'Popularized microcomputer computing.', weaknesses: 'Unstructured code in early dialects.'
             },
             {
-                id: 'smalltalk', name: 'Smalltalk', category: 'IMPERATIVE', subCategory: 'Pure Object-Oriented (OOP) / GUI', creator: 'Alan Kay (Xerox PARC)', target: 'Graphical Interactive Computing', environment: 'Xerox Alto', parents: [], children: ['ruby'],
-                features: ['Pure Object-Oriented model (Everything is an Object)', 'Message passing', 'GUI desktop'],
+                id: 'smalltalk', name: 'Smalltalk', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Pure Object-Oriented / GUI', creator: 'Alan Kay (Xerox PARC)', target: 'Graphical Interactive Computing', environment: 'Xerox Alto', parents: ['simula_67'], children: ['objective_c'],
+                features: ['Execution Model: Interpreter (Virtual Machine bytecode)', 'Pure Object-Oriented model (Everything is an Object)', 'Message passing'],
                 innovations: ['Pioneered pure Object-Oriented paradigm and modern GUI desktop'],
                 successes: 'Informed modern software engineering.', weaknesses: 'Dynamic interpretation speed.'
             },
             {
-                id: 'perl', name: 'Perl', category: 'IMPERATIVE', subCategory: 'Scripting / Text Processing', creator: 'Larry Wall', target: 'System Admin & Web CGI', environment: 'UNIX', parents: [], children: [],
-                features: ['Regular expressions', 'Three variable namespaces ($, @, %)'],
+                id: 'perl', name: 'Perl', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Text Processing', creator: 'Larry Wall', target: 'System Admin & Web CGI', environment: 'UNIX', parents: [], children: [],
+                features: ['Execution Model: Interpreter', 'Regular expressions', 'Three variable namespaces ($, @, %)'],
                 innovations: ['Early web CGI scripting standard'],
                 successes: 'Essential tool for system administration and early web.', weaknesses: 'Cryptic write-only code.'
             },
             {
-                id: 'python', name: 'Python', category: 'IMPERATIVE', subCategory: 'Scripting / Dynamic Object-Oriented', creator: 'Guido van Rossum', target: 'General Purpose & Scripting', environment: 'Open Source', parents: [], children: [],
-                features: ['Indentation-based block structure', 'Tuples, Lists, and Hashes built-in'],
+                id: 'python', name: 'Python', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Dynamic Object-Oriented', creator: 'Guido van Rossum', target: 'General Purpose & Scripting', environment: 'Open Source', parents: [], children: [],
+                features: ['Execution Model: Interpreter (bytecode compilation to PVM)', 'Indentation-based block structure', 'Tuples, Lists, and Hashes'],
                 innovations: ['Focus on syntax readability'],
                 successes: 'Dominant language for Data Science and AI.', weaknesses: 'Dynamic execution speed.'
             },
             {
-                id: 'javascript', name: 'JavaScript', category: 'IMPERATIVE', subCategory: 'Scripting / Prototype Object-Oriented', creator: 'Brendan Eich (Netscape)', target: 'Client-Side Web Scripting', environment: 'Browser Engine', parents: [], children: [],
-                features: ['Dynamic prototype-based inheritance', 'Asynchronous event loop'],
+                id: 'javascript', name: 'JavaScript', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Prototype Object-Oriented', creator: 'Brendan Eich (Netscape)', target: 'Client-Side Web Scripting', environment: 'Browser Engine', parents: [], children: [],
+                features: ['Execution Model: Interpreter / JIT Compilation', 'Dynamic prototype-based inheritance', 'Asynchronous event loop'],
                 innovations: ['Ubiquitous client-side browser execution'],
                 successes: 'Universal client-side web standard.', weaknesses: 'Dynamic type coercion gotchas.'
             },
             {
-                id: 'php', name: 'PHP', category: 'IMPERATIVE', subCategory: 'Scripting / Web Server-Side', creator: 'Rasmus Lerdorf', target: 'Server-Side Dynamic Web Pages', environment: 'Web Server', parents: [], children: [],
-                features: ['HTML-embedded scripting', 'Direct database connectivity'],
+                id: 'php', name: 'PHP', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Web Server-Side', creator: 'Rasmus Lerdorf', target: 'Server-Side Dynamic Web Pages', environment: 'Web Server', parents: [], children: [],
+                features: ['Execution Model: Interpreter', 'HTML-embedded scripting', 'Direct database connectivity'],
                 innovations: ['Simplified dynamic web form processing'],
                 successes: 'Powers millions of dynamic websites.', weaknesses: 'Legacy function naming inconsistency.'
             },
             {
-                id: 'ruby', name: 'Ruby', category: 'IMPERATIVE', subCategory: 'Scripting / Pure Object-Oriented', creator: 'Yukihiro Matsumoto', target: 'Web Scripting', environment: 'Japan', parents: ['smalltalk'], children: [],
-                features: ['Pure Object-Oriented (Primitives are objects)', 'Flexible block closures'],
+                id: 'ruby', name: 'Ruby', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Pure Object-Oriented', creator: 'Yukihiro Matsumoto', target: 'Web Scripting', environment: 'Japan', parents: [], children: [],
+                features: ['Execution Model: Interpreter', 'Pure Object-Oriented (Primitives are objects)', 'Flexible block closures'],
                 innovations: ['Blended Smalltalk OO philosophy with practical scripting'],
                 successes: 'Popularized rapid web development (Rails).', weaknesses: 'Slower execution runtime.'
             },
             {
-                id: 'lua', name: 'Lua', category: 'IMPERATIVE', subCategory: 'Scripting / Embeddable', creator: 'Pontifical Catholic Univ', target: 'Embedded Scripting & Games', environment: 'Cross-platform', parents: [], children: [],
-                features: ['Single table data structure', 'Easily embeddable C library'],
+                id: 'lua', name: 'Lua', category: 'IMPERATIVE_2', mainCategory: 'IMPERATIVE', subCategory: 'Scripting / Embeddable', creator: 'Pontifical Catholic Univ', target: 'Embedded Scripting & Games', environment: 'Cross-platform', parents: [], children: [],
+                features: ['Execution Model: Interpreter (bytecode VM)', 'Single table data structure', 'Easily embeddable C library'],
                 innovations: ['Extremely lightweight embeddable table model'],
                 successes: 'Dominant language for game modding and embedded systems.', weaknesses: 'Minimal standard library.'
             },
 
-            // ---------------- 2. FUNCTIONAL PARADIGM ----------------
+            // --- 2. FUNCTIONAL PARADIGM ---
             {
-                id: 'lisp', name: 'LISP', category: 'FUNCTIONAL', subCategory: 'Functional / List Processing', creator: 'John McCarthy (MIT)', target: 'Artificial Intelligence', environment: 'IBM 704', parents: [], children: ['scheme', 'common_lisp'],
-                features: ['Functional model based on Lambda Calculus', 'Atoms and Lists', 'Automatic garbage collection'],
+                id: 'lisp', name: 'LISP', category: 'FUNCTIONAL', mainCategory: 'FUNCTIONAL', subCategory: 'Functional / List Processing', creator: 'John McCarthy (MIT)', target: 'Artificial Intelligence', environment: 'IBM 704', parents: [], children: ['scheme', 'common_lisp'],
+                features: ['Execution Model: Interpreter / Compilation', 'Functional model based on Lambda Calculus', 'Atoms and Lists', 'Automatic garbage collection'],
                 innovations: ['First functional language, first garbage collector'],
                 successes: 'Dominant AI research language for decades.', weaknesses: 'Parentheses syntax.'
             },
             {
-                id: 'scheme', name: 'Scheme', category: 'FUNCTIONAL', subCategory: 'Functional / Academic Dialect', creator: 'Sussman & Steele (MIT)', target: 'Computer Science Education', environment: 'MIT Lab', parents: ['lisp'], children: [],
-                features: ['Small LISP dialect', 'Lexical scoping', 'Functions as first-class entities', 'Tail recursion'],
+                id: 'scheme', name: 'Scheme', category: 'FUNCTIONAL', mainCategory: 'FUNCTIONAL', subCategory: 'Functional / Academic Dialect', creator: 'Sussman & Steele (MIT)', target: 'Computer Science Education', environment: 'MIT Lab', parents: ['lisp'], children: [],
+                features: ['Execution Model: Interpreter', 'Small LISP dialect', 'Lexical scoping', 'Functions as first-class entities', 'Tail recursion'],
                 innovations: ['Lexical scoping in functional evaluation'],
                 successes: 'Widely used in university computer science curricula.', weaknesses: 'Minimal standard library.'
             },
             {
-                id: 'common_lisp', name: 'Common LISP', category: 'FUNCTIONAL', subCategory: 'Functional / Commercial Standard', creator: 'ANSI Committee', target: 'Commercial AI Systems', environment: 'Workstations', parents: ['lisp'], children: [],
-                features: ['Comprehensive standard language', 'CLOS (Common Lisp Object System)'],
+                id: 'common_lisp', name: 'Common LISP', category: 'FUNCTIONAL', mainCategory: 'FUNCTIONAL', subCategory: 'Functional / Commercial Standard', creator: 'ANSI Committee', target: 'Commercial AI Systems', environment: 'Workstations', parents: ['lisp'], children: [],
+                features: ['Execution Model: Compilation', 'Comprehensive standard language', 'CLOS (Common Lisp Object System)'],
                 innovations: ['Unified fragmented LISP dialects into commercial standard'],
                 successes: 'Standardized industrial functional language.', weaknesses: 'Large complex footprint.'
             },
 
-            // ---------------- 3. LOGIC PARADIGM ----------------
+            // --- 3. LOGIC PARADIGM ---
             {
-                id: 'prolog', name: 'Prolog', category: 'LOGIC', subCategory: 'Logic / Non-Procedural', creator: 'Colmerauer & Kowalski', target: 'Artificial Intelligence & Queries', environment: 'University Lab', parents: [], children: [],
-                features: ['Non-procedural logic programming based on Horn clauses', 'Facts and Rules database', 'Inference engine'],
+                id: 'prolog', name: 'Prolog', category: 'LOGIC', mainCategory: 'LOGIC', subCategory: 'Logic / Non-Procedural', creator: 'Colmerauer & Kowalski', target: 'Artificial Intelligence & Queries', environment: 'University Lab', parents: [], children: [],
+                features: ['Execution Model: Interpreter (Inference Engine)', 'Non-procedural logic programming based on Horn clauses', 'Facts and Rules database'],
                 innovations: ['Declarative paradigm: programmer states WHAT, not HOW'],
                 successes: 'Standard language for expert systems and logical deduction.', weaknesses: 'Inefficient for procedural math.'
             },
 
-            // ---------------- 4. MARKUP PROGRAMMING HYBRID ----------------
+            // --- 4. MARKUP PROGRAMMING HYBRID PARADIGM ---
             {
-                id: 'xslt', name: 'XSLT', category: 'MARKUP', subCategory: 'Markup Hybrid / XML Transformation', creator: 'W3C Committee', target: 'XML Document Transformation', environment: 'Web Standards', parents: [], children: [],
-                features: ['eXtensible Stylesheet Language Transformation', 'Transforms XML documents for display', 'Looping and conditional constructs'],
+                id: 'xslt', name: 'XSLT', category: 'MARKUP', mainCategory: 'MARKUP', subCategory: 'Markup Hybrid / XML Transformation', creator: 'W3C Committee', target: 'XML Document Transformation', environment: 'Web Standards', parents: [], children: [],
+                features: ['Execution Model: Interpreter (XSLT Processor)', 'eXtensible Stylesheet Language Transformation', 'Transforms XML documents for display', 'Looping and conditional constructs'],
                 innovations: ['Declarative XML data transformation language'],
                 successes: 'Standard tool for web data rendering and organization.', weaknesses: 'Verbose XML construct syntax.'
             },
             {
-                id: 'jsp', name: 'JSP', category: 'MARKUP', subCategory: 'Markup Hybrid / Dynamic Web', creator: 'Sun Microsystems', target: 'Dynamic Web Documents', environment: 'Java Servlet Container', parents: [], children: [],
-                features: ['Java Server Pages', 'Embedding Java programming constructs into HTML elements'],
+                id: 'jsp', name: 'JSP', category: 'MARKUP', mainCategory: 'MARKUP', subCategory: 'Dynamic Web / Markup Hybrid', creator: 'Sun Microsystems', target: 'Dynamic Web Documents', environment: 'Java Servlet Container', parents: [], children: [],
+                features: ['Execution Model: Hybrid (Compiled to Java Servlets)', 'Java Server Pages', 'Embedding Java programming constructs into HTML elements'],
                 innovations: ['Server-side Java web document generation'],
                 successes: 'Enterprise Java web standard.', weaknesses: 'Complex server container setup.'
             }
         ];
 
-        // The 4 Core Paradigm Columns Required
         const columns = [
-            { id: 'IMPERATIVE', title: 'Imperative', color: 'border-blue-500/40 text-blue-400' },
+            { id: 'IMPERATIVE_1', title: 'Imperative (Early & Systems)', color: 'border-blue-500/40 text-blue-400' },
+            { id: 'IMPERATIVE_2', title: 'Imperative (OOP & Scripting)', color: 'border-cyan-500/40 text-cyan-400' },
             { id: 'FUNCTIONAL', title: 'Functional', color: 'border-purple-500/40 text-purple-400' },
             { id: 'LOGIC', title: 'Logic', color: 'border-emerald-500/40 text-emerald-400' },
             { id: 'MARKUP', title: 'Markup programming hybrid', color: 'border-pink-500/40 text-pink-400' }
         ];
 
         let currentZoom = 1.0;
-        let panX = 40;
+        let panX = 30;
         let panY = 20;
         let isDragging = false;
         let startX, startY;
@@ -496,14 +498,14 @@
             columnsWrapper.innerHTML = '';
             columns.forEach(col => {
                 const colEl = document.createElement('div');
-                colEl.className = 'w-80 flex flex-col gap-5 min-h-[1400px] flex-shrink-0';
+                colEl.className = 'w-72 flex flex-col gap-3 min-h-[900px] flex-shrink-0';
                 colEl.dataset.colCategory = col.id;
                 colEl.innerHTML = `
-                    <div class="glass-panel p-3.5 rounded-xl border ${col.color} flex items-center justify-between sticky top-0 z-20 shadow-lg">
-                        <h2 class="font-bold text-base tracking-wide">${col.title}</h2>
-                        <span class="text-xs px-2.5 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono" id="count-${col.id}">0</span>
+                    <div class="glass-panel p-3 rounded-xl border ${col.color} flex items-center justify-between sticky top-0 z-20 shadow-lg">
+                        <h2 class="font-bold text-xs tracking-wide">${col.title}</h2>
+                        <span class="text-[10px] px-2 py-0.5 rounded-full bg-slate-800 text-slate-300 font-mono" id="count-${col.id}">0</span>
                     </div>
-                    <div class="node-container flex flex-col gap-4 flex-1" id="col-body-${col.id}"></div>
+                    <div class="node-container flex flex-col gap-2.5 flex-1" id="col-body-${col.id}"></div>
                 `;
                 columnsWrapper.appendChild(colEl);
             });
@@ -518,16 +520,16 @@
                 card.id = `node-${lang.id}`;
                 card.dataset.id = lang.id;
                 card.dataset.category = lang.category;
-                card.className = `glass-card p-4 rounded-xl cursor-pointer relative z-10 text-left group transition-all duration-200 border border-slate-700/60 hover:border-blue-400/50`;
+                card.className = `glass-card p-3 rounded-xl cursor-pointer relative z-10 text-left group transition-all duration-150 border border-slate-700/60 hover:border-blue-400/50`;
 
                 card.innerHTML = `
-                    <div class="flex items-start justify-between mb-1.5">
-                        <h3 class="font-bold text-sm text-slate-100 group-hover:text-blue-400 transition-colors">${lang.name}</h3>
-                        <i class="fa-solid fa-chevron-right text-[10px] text-slate-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-1 transition-all"></i>
+                    <div class="flex items-start justify-between mb-1">
+                        <h3 class="font-bold text-xs text-slate-100 group-hover:text-blue-400 transition-colors">${lang.name}</h3>
+                        <i class="fa-solid fa-chevron-right text-[9px] text-slate-500 opacity-0 group-hover:opacity-100 group-hover:translate-x-0.5 transition-all"></i>
                     </div>
-                    <p class="text-[11px] text-slate-400 line-clamp-1 mb-2.5">${lang.creator}</p>
+                    <p class="text-[10px] text-slate-400 line-clamp-1 mb-1.5">${lang.creator}</p>
                     <div class="flex flex-wrap gap-1">
-                        <span class="text-[9px] px-2 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/40 font-medium">${lang.subCategory}</span>
+                        <span class="text-[8px] px-1.5 py-0.5 rounded bg-amber-950/60 text-amber-300 border border-amber-800/40 font-medium">${lang.subCategory}</span>
                     </div>
                 `;
 
@@ -567,7 +569,7 @@
                     const endX = (targetRect.left - containerRect.left) / currentZoom;
                     const endY = (targetRect.top + targetRect.height / 2 - containerRect.top) / currentZoom;
 
-                    const controlDist = Math.max(50, Math.abs(endX - startX) * 0.45);
+                    const controlDist = Math.max(40, Math.abs(endX - startX) * 0.4);
                     const pathData = `M ${startX} ${startY} C ${startX + controlDist} ${startY}, ${endX - controlDist} ${endY}, ${endX} ${endY}`;
 
                     const path = document.createElementNS('http://www.w3.org/2000/svg', 'path');
@@ -621,7 +623,7 @@
 
         function openDrawer(lang) {
             document.getElementById('drawerTitle').innerText = lang.name;
-            document.getElementById('drawerCategory').innerText = lang.category + ' PARADIGM';
+            document.getElementById('drawerCategory').innerText = lang.mainCategory + ' PARADIGM';
             document.getElementById('drawerSubCategory').innerText = lang.subCategory;
             document.getElementById('drawerMeta').innerText = `Created by ${lang.creator}`;
             document.getElementById('drawerCreator').innerText = lang.creator;
@@ -749,7 +751,7 @@
 
         function resetView() {
             currentZoom = 1.0;
-            panX = 40;
+            panX = 30;
             panY = 20;
             updateTransform();
         }
